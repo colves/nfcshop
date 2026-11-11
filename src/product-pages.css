@@ -1,0 +1,56 @@
+/* Product pages extend the existing green, quiet storefront system. */
+.product-page { padding-bottom: 60px; }
+.breadcrumbs { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding-block:24px; font-size:12px; color:var(--muted); }
+.breadcrumbs a:hover { color:var(--green); text-decoration:underline; }
+.service-hero { display:grid; grid-template-columns:1.15fr 1fr; align-items:center; gap:70px; padding-block:35px 75px; }
+.service-hero-copy .eyebrow { display:block; }
+.service-hero h1 { font-size:clamp(34px,3.7vw,54px); line-height:1.18; letter-spacing:-2px; }
+.service-hero-copy>p { margin-top:24px; max-width:490px; font-size:16px; line-height:1.9; color:var(--muted); }
+.service-hero .button { margin-top:28px; }
+.service-use { display:block; color:var(--muted); font-size:12px; margin-top:18px; }
+.service-demo { margin:0; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:var(--surface); }
+.demo-window-bar { display:flex; align-items:center; gap:5px; padding:15px 20px; border-bottom:1px solid var(--line); background:white; }
+.demo-window-bar i { width:6px; height:6px; border-radius:50%; background:#d9e2d6; }
+.demo-window-bar>span { margin-left:auto; color:var(--muted); font-size:9px; letter-spacing:1.4px; }
+.service-demo figcaption { padding:16px 24px; font-size:12px; color:var(--muted); border-top:1px solid var(--line); background:white; }
+.service-preview { min-height:285px; display:flex; flex-direction:column; justify-content:center; padding:40px; gap:25px; }
+.service-preview>span { text-transform:uppercase; font-size:11px; letter-spacing:1.5px; font-weight:750; color:var(--green); }
+.service-preview h3 { font-size:32px; line-height:1.3; letter-spacing:-1px; max-width:320px; }
+.preview-route { display:flex; flex-wrap:wrap; align-items:center; gap:15px; font-size:13px; }
+.preview-route>span:first-child { border:1px solid #c9d9c4; background:white; border-radius:6px; padding:7px 12px; }
+.preview-instagram { background:#f8eff3; }.preview-instagram>span { color:#923359; }
+.preview-whatsapp { background:#e8f3e8; }.preview-web { background:#edf3f6; }.preview-ilan { background:#f5f3e8; }
+.sample-menu { max-width:320px; margin:24px auto; padding:30px; background:#fffdf5; border:1px solid #e7dfcc; border-radius:10px; }
+.sample-menu>span { font-size:8px; letter-spacing:1.6px; color:#6e613d; font-weight:800; }
+.sample-menu h3 { font-size:32px; letter-spacing:-1.4px; margin-top:12px; line-height:1.2; }
+.sample-menu nav { display:flex; gap:16px; border-block:1px solid #e7dfcc; margin-top:22px; padding-block:10px; font-size:11px; color:#6e613d; }
+.sample-menu>div { padding-top:16px; }.sample-menu strong,.sample-menu small { display:block; }.sample-menu strong { font-size:13px; }.sample-menu small { color:#7b725e; font-size:11px; margin-top:3px; }
+.sample-menu>p { font-size:9px; color:#7b725e; padding-top:23px; }
+.demo-menu { background:#f0eadb; }
+.sample-account { padding:32px; background:#edf3f5; }.sample-account>span { display:block; font-size:10px; color:#4d6673; letter-spacing:1.5px; font-weight:750; }.sample-account h3 { font-size:26px; letter-spacing:-.8px; margin:8px 0 28px; }.sample-account p { margin-block:10px 20px; color:#4d6673; font-size:14px; }.sample-account button { background:#254e61; color:white; font-size:13px; font-weight:700; min-height:44px; padding:10px 18px; border-radius:6px; }.sample-account small { display:block; font-size:11px; color:#4d6673; margin-top:15px; }
+.service-explanation { display:grid; grid-template-columns:1fr 1fr; gap:70px; border-top:1px solid var(--line); padding-block:45px 55px; }
+.service-explanation .eyebrow { display:block; }.service-explanation h2,.menu-service-list h2,.product-page-faq h2,.related-products h2 { font-size:30px; line-height:1.3; letter-spacing:-1px; }
+.service-explanation>div>p { margin-top:18px; font-size:14px; line-height:1.9; color:var(--muted); max-width:470px; }
+.service-explanation ol { padding:0; margin:0; list-style:none; }.service-explanation li { display:flex; gap:20px; padding:16px 0; border-bottom:1px solid var(--line); font-size:14px; }.service-explanation li>span { font-size:11px; color:var(--green); font-weight:800; padding-top:3px; }
+.menu-service-list { padding-block:30px 60px; }.menu-service-list .section-heading { margin-bottom:28px; }.service-options { display:grid; grid-template-columns:repeat(4,1fr); border-block:1px solid var(--line); }.service-options article { padding:26px 20px; display:flex; flex-direction:column; align-items:start; }.service-options article:first-child { padding-left:0; }.service-options article+article { border-left:1px solid var(--line); }.service-options article>span { font-size:11px; color:var(--green); font-weight:750; }.service-options h3 { font-size:18px; margin:14px 0 10px; letter-spacing:-.5px; }.service-options p { color:var(--muted); font-size:13px; line-height:1.8; margin-bottom:23px; }.service-options .text-link { margin-top:auto; min-height:44px; padding:0; }.service-scope { margin-top:18px; color:var(--muted); font-size:12px; max-width:800px; }
+.page-config { border:1px solid var(--line); border-radius:16px; overflow:clip; margin-block:10px 60px; }
+.page-config .product-dialog-heading { position:static; padding:25px 32px; border-bottom:1px solid var(--line); }
+.page-config .product-dialog-heading .eyebrow { margin:0; }
+.page-config .product-detail-grid { padding:32px; gap:42px; align-items:start; }
+.page-config .detail-media { top:105px; }
+.page-config .detail-card-art { background-image:linear-gradient(45deg,#ffffff50 25%,transparent 25%,transparent 75%,#ffffff50 75%),linear-gradient(45deg,#ffffff50 25%,transparent 25%,transparent 75%,#ffffff50 75%); background-size:32px 32px; background-position:0 0,16px 16px; }
+.page-config .physical-card.material-clear { background:#ffffffb8; backdrop-filter:blur(2px); border-color:#fff; box-shadow:1px 3px 0 #abb8ac,0 14px 30px #233e2515; }
+.page-config .physical-card.material-white { background:#fff; border-color:#e4e6e1; }
+.page-config .detail-description { font-size:14px; }.page-config .field-note,.page-config .radio-card small { font-size:12px; }.page-config .radio-card { font-size:13px; }.page-config .radio-card strong { font-size:13px; }.page-config .preview-note { font-size:12px; }.page-config .selection-summary { font-size:12px; }
+.physical-options { padding-block:10px 20px; border-bottom:1px solid var(--line); margin-bottom:23px; }.physical-options select { display:block; width:100%; margin-top:8px; }.physical-options fieldset { margin-top:20px; margin-bottom:0; }.material-options { grid-template-columns:1fr 1fr; }.material-swatch { width:20px; height:20px; flex-shrink:0; border-radius:4px; border:1px solid #a9b6ab; }.swatch-clear { background:repeating-conic-gradient(#dce5da 0% 25%,#fff 0% 50%) 50% / 10px 10px; }.swatch-white { background:white; }.material-options .radio-card { flex-wrap:wrap; gap:8px; }
+.product-page-faq { display:grid; grid-template-columns:1fr 1.4fr; gap:70px; padding-block:15px 60px; }.product-page-faq .eyebrow { display:block; }.product-page-faq summary { min-height:48px; }.product-page-faq details>p { font-size:14px; }
+.related-products { border-top:1px solid var(--line); padding-top:40px; }.related-products .eyebrow { display:block; }.related-products>div { display:grid; grid-template-columns:repeat(3,1fr); gap:0 25px; margin-top:25px; }.related-products a { display:flex; justify-content:space-between; gap:10px; padding:18px 0; font-size:14px; border-bottom:1px solid var(--line); }.related-products a:hover { color:var(--green); }.contact-dialog>.contact-number { margin-top:12px; font-size:13px; }.product-art { display:flex; }
+@media(max-width:1000px) { .service-hero,.service-explanation,.product-page-faq { gap:35px; }.service-hero h1 { font-size:40px; }.service-preview { padding:30px; }.desktop-nav { gap:18px; }.service-options { grid-template-columns:1fr 1fr; }.service-options article:nth-child(3) { border-left:0; padding-left:0; border-top:1px solid var(--line); }.service-options article:nth-child(4) { border-top:1px solid var(--line); }.page-config .product-detail-grid { gap:25px; padding:25px; } }
+@media(max-width:700px) {
+  .breadcrumbs { padding-block:20px 10px; font-size:11px; gap:7px; }
+  .service-hero { grid-template-columns:1fr; gap:30px; padding-block:25px 40px; }.service-hero h1 { font-size:36px; letter-spacing:-1.5px; }.service-hero h1 br { display:none; }.service-hero-copy>p { font-size:14px; margin-top:18px; }.service-hero .button { font-size:12px; margin-top:22px; }.service-use { font-size:11px; }.service-preview { min-height:235px; padding:28px; }.service-preview h3 { font-size:28px; }.service-demo figcaption { font-size:11px; padding:14px 20px; }.sample-menu { max-width:280px; padding:25px; }.sample-account { padding:25px; }
+  .service-explanation { grid-template-columns:1fr; gap:18px; padding-block:30px 35px; }.service-explanation h2,.menu-service-list h2,.product-page-faq h2,.related-products h2 { font-size:26px; }.service-explanation>div>p { font-size:13px; margin-top:14px; }.service-explanation li { font-size:13px; padding-block:14px; }
+  .menu-service-list { padding-block:15px 35px; }.menu-service-list .section-heading { display:block; }.menu-service-list .section-heading>p { margin-top:14px; font-size:13px; }.service-options article { padding:20px 14px; }.service-options h3 { font-size:16px; }.service-options p { font-size:12px; }.service-options .text-link { font-size:12px; }.service-scope { font-size:12px; }
+  .page-config { margin-bottom:35px; }.page-config .product-dialog-heading { padding:18px; gap:12px; }.page-config .product-dialog-heading .eyebrow { font-size:8px; }.page-config .product-dialog-heading .text-link { font-size:11px; }.page-config .product-detail-grid { grid-template-columns:1fr; padding:18px; gap:20px; }.page-config .detail-media { position:static; }.page-config .detail-content h2 { font-size:26px; }.page-config .detail-specs { font-size:11px; }.page-config .detail-caption { font-size:11px; }.page-config .detail-description { font-size:13px; }.material-options { grid-template-columns:1fr; }
+  .product-page-faq { grid-template-columns:1fr; gap:15px; padding-block:0 35px; }.product-page-faq details>p { font-size:13px; }.related-products { padding-top:30px; }.related-products>div { grid-template-columns:1fr 1fr; gap:0 18px; }.related-products a { font-size:12px; min-height:60px; align-items:center; }.product-page { padding-bottom:40px; }
+}

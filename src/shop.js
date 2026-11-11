@@ -15,12 +15,26 @@ export function connectionNote(connection, linkType) {
   return 'Basılı QR kodunun hedefi sonradan değiştirilemez. Değişiklik ihtiyacınız varsa değiştirilebilir bağlantıyı seçin.';
 }
 export const menuLabels = { link: 'Hazır menü bağlantım var', pdf: 'Hazır PDF menüm var', 'design-pdf': 'PDF menü hazırlatmak istiyorum', 'design-web': 'Web menüsü hazırlatmak istiyorum' };
+export const sizeLabels = { '10x10': '10 × 10 cm' };
+export const materialLabels = { clear: 'Şeffaf pleksi', white: 'Beyaz pleksi' };
+export const whatsappNumber = '905511956312';
+export function contactUrl(message = '') {
+  return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message || 'Merhaba, NFC ve QR kartlarınız hakkında bilgi almak istiyorum.')}`;
+}
 export function validQuantity(n) { return Number.isInteger(n) && n >= 1 && n <= 1000; }
 export function makeSelection(productId, options = {}) {
-  const { connection = 'hybrid', linkType = 'static', quantity = 1, menuType = 'link' } = options;
+  const { connection = 'hybrid', linkType = 'static', quantity = 1, menuType = 'link', size = '10x10', material = 'clear' } = options;
   if (!products.some(p => p.id === productId) || !connectionLabels[connection] || !linkLabels[linkType] || !validQuantity(quantity) || (productId === 'menu' && !menuLabels[menuType])) throw new Error('Ürün seçeneklerini ve 1–1000 arasındaki adedi kontrol edin.');
   const actualMenuType = productId === 'menu' ? menuType : null;
-  return { productId, connection, linkType, quantity, menuType: actualMenuType, key: [productId, connection, linkType, actualMenuType || ''].join(':') };
+  if (!sizeLabels[size] || !materialLabels[material]) throw new Error('Boyut ve pleksi seçimini kontrol edin.');
+  return { productId, connection, linkType, quantity, size, material, menuType: actualMenuType, key: [productId, size, material, connection, linkType, actualMenuType || ''].join(':') };
+}
+export function restoreCart(value) {
+  try {
+    const records = JSON.parse(value);
+    if (!Array.isArray(records) || records.length > 100) return [];
+    return records.reduce((cart, record) => addToCart(cart, makeSelection(record.productId, record)), []);
+  } catch { return []; }
 }
 export function addToCart(cart, selection) {
   const existing = cart.find(item => item.key === selection.key);

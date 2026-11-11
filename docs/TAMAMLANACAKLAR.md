@@ -1,29 +1,47 @@
-# Yayın sonrası tek soru listesi
+# Karar bekleyenler ve satışa geçiş
 
-Açık konular önizlemeyi engellemez; gerçek satıştan önce tamamlanmalıdır.
+11 Kasım 2026 — güncel soru listesi. Yanıtlanmış konular tekrar sorulmaz. Fiyat ve marka bilinçli olarak sonraya bırakıldı.
 
-1. Son marka adı NFCShop mu, başka bir isim mi? Proje adı geçici kullanılıyor; marka/alan adı uygunluğu ayrıca araştırılmalı.
-2. WhatsApp hattı hangi numara olacak? Şu anda numara uydurulmadı; iletişim düğmesi açıklama açıyor.
-3. Her ürün ve QR/NFC/sabit/dinamik seçeneğinin satış fiyatı, KDV gösterimi ve adet indirimleri ne olacak? Şimdilik tüm fiyatlar null, ödeme kapalı.
-4. Kargo bedeli, ücretsiz kargo eşiği, üretim ve teslim süresi ne olacak?
-5. Dinamik hizmet kaç yıl dahil, kaç değişiklik dahil ve hizmet sona ererse süreç ne olacak? “Ömür boyu” taahhüdü verilmedi.
-6. IBAN için hazır bir sayfa mı istenecek, yoksa hesap adı/IBAN gösteren sayfayı biz mi hazırlayacağız? Otomatik ödeme veya banka uygulaması açma vaadi yok.
-7. PDF ve web menüsü tasarım ücretleri, kapsamı, revizyon hakkı ve sonradan fiyat güncelleme bedeli ne olacak? İlk aşamada güncellemeleri işletmeci yönetir; müşteri paneli yapılmadı.
-8. Logo ekleme ve özel tasarımın kapsamı, baskı onayı ve iptal/iade koşulları nasıl olacak?
-9. Gerçek ürün fotoğrafları ve nihai baskı tasarımları ne zaman gelecek? Görseller temsili, medya alanları hazır.
-10. Satıcı unvanı, iş adresi, iletişim bilgileri ve satış için geçerli belgeler neler? Kişisel SGK/vergi belgeleri bu depoya alınmadı.
-11. Hangi kartla ödeme sağlayıcısı ve canlı satış barındırması kullanılacak? Gizli anahtarlar GitHub'a veya tarayıcıya yazılmayacak.
-12. NFC çipi, yapıştırılan yüzeyler ve iPhone/Android numune testleri tamamlandı mı? NTAG213 kısa URL için aday; 180 bayt toplam / 144 bayt kullanıcı belleği ayrımı dikkate alınmalı.
+## Kullanıcıdan gereken kararlar
+
+1. **Boyut:** 10×10 cm dışında hangi ölçüler üretilecek? Şimdilik yalnız doğrulanmış 10×10 seçilebilir. Şeffaf/beyaz seçenekleri eklendi.
+2. **Üretim ve çıkış:** Gönderiler Sakarya'dan mı Kütahya'dan mı çıkacak? Bağlantı/tasarım onayından sonra hazır kart kaç iş gününde paketlenebilir? Taşıma süresi bu hazırlıktan ayrı.
+3. **Menü kapsamı:** İlk özel web menüsü için ürün/kategori sayısı, dil, revizyon hakkı ve sonraki güncellemelerin kapsamı ne olacak? Başlangıç önerisi tek şube ve Türkçe; sipariş/POS/mutfak modülü ilk kapsamda yok.
+4. **Dinamik hizmet:** İlk ücrete dahil süre ve hedef değişikliği koşulları ne olacak? Süre sonunda yenileme ve bağlantının devam süreci açıklanmalı; ömür boyu vaadi yok.
+5. **IBAN hizmeti:** Hazır müşteri sayfasına yönlendirme mi, hesap sahibi/banka/IBAN sayfasını bizim hazırlamamız mı? Öneri bize ait sade sayfa; gerçek IBAN şimdi istenmez.
+6. **Kişiselleştirme:** Logo ekleme standart mı ayrıca ücretli mi? Kaç revizyon olacak ve üretim öncesi onay nasıl alınacak?
+7. **Satıcı:** Satışı hangi işletme yapacak? Ticari unvan, destek e-postası, iş/iade adresi ve ödeme hesabı gerçek satıcıya göre tamamlanacak. Bilgiler uydurulmaz.
+
+## Araştırma, teklif ve test ile netleşecek işler
+
+- Gerçek ambalajda 1/5/10 kart ölçüsü/ağırlığı, kargo teklifi, KDV/ek ücret/iade/hasar koşulları. Sonra müşteriye kargo bedeli ve ücretsiz gönderim eşiği.
+- Maliyet, komisyon, paketleme ve hizmet emeği ile satış fiyatı ve adet indirimleri. Rakip fiyatları bizim fiyatımız olarak girilmedi. Baskı kullanıcı isteğiyle şimdilik hesap dışı.
+- Menü tasarımı, veri girişi, yayın ve güncelleme fiyatları; tasarım ücretiyle kart adedi indirimi ayrı.
+- Nihai NFC çipi, iPhone/Android okuma ve yüzey testleri; şeffaf/beyaz baskıda QR kontrastı. NTAG213 toplam/kullanıcı belleği ayrımı dikkate alınır.
+- Marka/alan adı kararı ve uygunluk kontrolü; NFCShop geçici proje adı. Kullanıcı kararı sonraya bıraktı.
+- Nihai görseller daha sonra hazırlanacak. Bu turda fotoğraf üretilmedi; kartlar ve kullanım örnekleri temsili.
+- Ödeme sağlayıcısının yazılı teklifi ve satışa uygun barındırma; başvuru veya tahsilat yapılmadı.
+
+## Tamamlanan eklemeler
+
+- Yedi ürün için doğrudan açılabilen ayrı HTML adresi, hizmete özel anlatım/örnek ve ilgili ürün bağlantıları.
+- Boyut alanı, şeffaf/beyaz seçimi, QR/NFC ve sabit/dinamik seçenekleri. Belirlenmemiş ölçü satışta gösterilmez.
+- Menüde dört hizmet seçeneği; tasarım seçiminde WhatsApp teklif taslağına seçeneklerin aktarımı.
+- WhatsApp hattı eklendi; bağlantıyı açıp mesajı göndermeye ziyaretçi karar verir. Otomatik gönderim yok.
+- Sepet aynı sekmede sayfa geçişlerinde ve yenilemede korunur. Yalnız ürün seçenekleri sessionStorage'da tutulur.
+- Fiyatlar henüz girilmedi; tüm satın alma düğmeleri devre dışı.
 
 ## Satışa geçiş için teknik işler
-- Satışa uygun barındırma ve kendi alan adı; GitHub Pages ticari mağaza altyapısı olarak kullanılmaz.
-- Sunucu tarafında fiyat ve sepet doğrulama, sağlayıcı ödeme sayfasına yönlendirme, imzalı ödeme bildirimi ve tekrar işlem koruması.
-- Kalıcı sipariş kaydı, sipariş durumu ve müşteri bilgilendirmeleri; kart bilgisi bu sitede tutulmaz.
-- Yetkilendirilmiş yönetim ve yönlendirme kayıtları; müşterinin kartındaki kalıcı adres korunur.
-- PDF için boyut/tür/içerik kontrolü, güvenli depolama ve kötü amaçlı içerik taraması.
-- Satıcı bilgilerine uygun mesafeli satış, ön bilgilendirme, kişiselleştirilmiş ürün koşulları, KVKK ve gerekiyorsa çerez düzenlemeleri.
-- Gerçek stok/fiyat verileri oluşunca ürün SEO verileri; gerçek satış öncesinde noindex'in bilinçli kaldırılması.
-- Test ödemesi, iptal/iade, başarısız ödeme, mobil cihaz ve üretim sonrası QR/NFC kalite kontrolü.
+
+- Satışa uygun barındırma ve kendi alan adı; GitHub Pages yalnız önizleme.
+- Sunucuda fiyat/sepet doğrulama, sağlayıcı formu, imzalı ödeme bildirimi ve tekrar işlem koruması.
+- Kalıcı sipariş kaydı, sipariş durumu ve müşteri bilgilendirmesi; kart bilgisi sitede tutulmaz.
+- Yetkili yönetim ve kalıcı yönlendirme kayıtları; alan adı yenilemesi, yedek ve hizmet süreleri.
+- PDF boyut/tür/içerik kontrolü, güvenli depolama ve zararlı içerik kontrolü.
+- Gerçek satıcıya uygun satış/ön bilgilendirme, kişiselleştirme, iade, KVKK ve gerekli diğer metinler.
+- Gerçek stok/fiyat oluşunca SEO ürün verileri; satış açılmadan noindex bilinçli kaldırılacak.
+- Test ödemesi, iptal/iade, başarısız ödeme ve üretim sonrası QR/NFC kontrolü.
 
 ## Önizleme sınırları
-Sepet yalnız açık sayfanın belleğinde tutulur, sayfa yenilenince sıfırlanır. Link, PDF, adres, ödeme bilgisi istenmez veya gönderilmez. Ürün QR'ları örnek olarak https://example.org adresini kodlar. Dinamik yönlendirme ve menü barındırma henüz çalışır hizmet değildir. Fiyat ve satın alma düğmeleri bilinçli kapalıdır.
+
+Gerçek sipariş, ödeme, dosya yükleme, müşteri hesabı, menü yayını veya dinamik yönlendirme hizmeti yoktur. Kartlardaki örnek QR, https://example.org adresini kodlar. IBAN demosu gerçek hesap içermez. WhatsApp, ziyaretçi mesajı gönderirse üçüncü taraf iletişim kanalıdır.

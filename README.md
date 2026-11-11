@@ -22,9 +22,9 @@ npm run build:pages
 `build` çıktısı `dist/`, `build:pages` yayın kopyası `docs/` klasöründedir. GitHub Pages kaynağı **main /docs** olarak ayarlanır. Göreli dosya yolları `/nfcshop/` gibi alt dizinleri destekler. Derleme çıktıları elle düzenlenmez.
 
 ## Hazır olanlar
-- Yedi ürün, kategori filtreleri, doğrudan paylaşılabilen ürün önizleme adresleri (`#urun/google`).
+- Yedi ürün, kategori filtreleri ve her ürün için ayrı HTML adresi (`urun/google-yorum-karti/`). Eski ürün hash bağlantıları yeni sayfaya yönlenir.
 - QR+NFC, yalnız NFC, yalnız QR; sabit/değiştirilebilir bağlantı seçimi ve adet.
-- Ürün seçimlerini birleştiren, adet değiştirme ve silme içeren bellek içi önizleme sepeti.
+- 10×10cm boyut alanı, şeffaf/beyaz pleksi seçimi; varyantları ayrı tutan ve sekme oturumunda korunan önizleme sepeti.
 - Menünün dört türü; PDF/web tasarımında teklif iletişimi akışı.
 - Kapalı satın alma düğmeleri ve “Fiyat henüz girilmedi” gösterimi. Ödeme alanı yoktur.
 - Klavye, native dialog odak yönetimi, Escape, mobil menü, reduced-motion ve responsive yerleşim.
@@ -33,11 +33,12 @@ npm run build:pages
 ## İçerik ve yapı
 - `src/shop.js`: ürünler, seçenekler, sepet kuralları. Fiyatlar bilinçli olarak `null`.
 - `src/main.js`: etkileşimler ve temsili kartlar; gerçek yönlendirme veya ödeme servisi değildir.
+- `src/product-pages.js`: hizmete özel sayfa içerikleri; derlemede yedi bağımsız sayfa üretilir.
 - `src/style.css`: tasarım sistemi ve ekran boyutlarına uyarlamalar.
 - [Kaynaklar ve tasarım kararları](docs/TASARIM-KARARLARI.md)
 - [Tamamlanacak bilgiler ve satışa geçiş](docs/TAMAMLANACAKLAR.md)
 
 ## Önemli sınırlar
-WhatsApp numarası henüz verilmediği için iletişim düğmesi bilgi penceresi açar. Sahte numara, fiyat, müşteri yorumu veya sipariş başarısı kullanılmaz. PDF yükleme/bağlantı toplama ve ödeme, gerçek sunucu ile ticari koşullar hazırlanınca eklenmelidir. Dinamik bağlantı hizmeti için kendi kalıcı alan adı kullanılmalıdır.
+WhatsApp düğmesi ürün seçimini içeren mesaj taslağına yönlendirir; mesajı ziyaretçi kendisi gönderir. Fiyat, müşteri yorumu veya sipariş başarısı uydurulmaz. PDF yükleme/bağlantı toplama ve ödeme, gerçek sunucu ile ticari koşullar hazırlanınca eklenmelidir. Dinamik bağlantı hizmeti için kendi kalıcı alan adı kullanılmalıdır.
 
 Manrope açık lisanslı yazı tipi yerel derlemeye dahildir; font CDN isteği yapılmaz. Yedek Arial/sans-serif vardır. Analitik, reklam pikseli ve takip çerezi eklenmedi.

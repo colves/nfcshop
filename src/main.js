@@ -1,7 +1,9 @@
 import '@fontsource-variable/manrope';
 import './readability.css';
+import './product-pages.css';
+import { productPages, productPath, productIdFromPath } from './product-pages.js';
 import QRCode from 'qrcode';
-import { products, makeSelection, addToCart, changeQuantity, requiresQuote, connectionLabels, linkLabels, menuLabels, connectionNote } from './shop.js';
+import { products, makeSelection, addToCart, changeQuantity, requiresQuote, connectionLabels, linkLabels, menuLabels, connectionNote, sizeLabels, materialLabels, contactUrl, restoreCart } from './shop.js';
 
 const paths = {
   arrow: '<path d="M5 12h14m-5-5 5 5-5 5"/>',
@@ -35,15 +37,19 @@ const icon = (name, cls = '') => `<svg class="icon ${cls}" viewBox="0 0 24 24" f
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const hydrate = (root = document) => root.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = icon(el.dataset.icon); });
 const qrSvg = await QRCode.toString('https://example.org', { type: 'svg', margin: 1, width: 100, color: { dark: '#18221d', light: '#ffffff' } });
+const pageProduct = productIdFromPath(location.pathname);
+const homeBase = pageProduct ? '../../' : './';
 let cart = [];
+try { cart = restoreCart(sessionStorage.getItem('nfc-preview-cart')); } catch {}
+function saveCart() { try { sessionStorage.setItem('nfc-preview-cart', JSON.stringify(cart)); } catch {} }
 let toastTimer;
 let activeFilter = 'all';
 
 function productMark(p) {
   return p.symbol === 'G' ? '<span class="google-mark">G</span>' : icon(p.symbol);
 }
-function cardMockup(p, { connection = 'hybrid', className = '' } = {}) {
-  return `<div class="physical-card ${esc(p.tone)} ${className}"><div class="card-platform">${productMark(p)}<span>${esc(p.label)}</span></div><div class="card-message"><strong>${esc(p.headline)}</strong><span>${esc(p.subtitle)}</span></div><div class="card-connect"><div class="card-qr ${connection === 'nfc' ? 'no-qr' : ''}">${connection === 'nfc' ? icon('tap') : qrSvg}</div><div class="card-connect-copy">${connection !== 'qr' ? '<span class="nfc-wave">)))</span><strong>Telefonunu yaklaştır</strong>' : '<strong>Kameranla okut</strong>'}<span>${connection === 'hybrid' ? 'veya QR kodu okut' : connection === 'nfc' ? 'NFC ile bağlantı kur' : 'bağlantıyı keşfet'}</span></div></div><div class="card-brand">nfcshop<span>•</span></div></div>`;
+function cardMockup(p, { connection = 'hybrid', material = 'clear', className = '' } = {}) {
+  return `<div class="physical-card ${esc(p.tone)} material-${material} ${className}"><div class="card-platform">${productMark(p)}<span>${esc(p.label)}</span></div><div class="card-message"><strong>${esc(p.headline)}</strong><span>${esc(p.subtitle)}</span></div><div class="card-connect"><div class="card-qr ${connection === 'nfc' ? 'no-qr' : ''}">${connection === 'nfc' ? icon('tap') : qrSvg}</div><div class="card-connect-copy">${connection !== 'qr' ? '<span class="nfc-wave">)))</span><strong>Telefonunu yaklaştır</strong>' : '<strong>Kameranla okut</strong>'}<span>${connection === 'hybrid' ? 'veya QR kodu okut' : connection === 'nfc' ? 'NFC ile bağlantı kur' : 'bağlantıyı keşfet'}</span></div></div><div class="card-brand">nfcshop<span>•</span></div></div>`;
 }
 function notify(message) {
   const toast = document.querySelector('#toast');
@@ -60,13 +66,13 @@ function showDialog(id) {
 function renderCatalog() {
   const shown = products.filter(p => activeFilter === 'all' || p.category === activeFilter);
   document.querySelector('#catalog-count').textContent = `${shown.length} ürün`;
-  document.querySelector('#product-grid').innerHTML = shown.map((p, index) => `<article class="product-card"><button class="product-art art-${p.tone}" data-product="${p.id}" aria-label="${p.name} seçeneklerini incele"><span class="art-badge">QR + NFC</span>${cardMockup(p)}<span class="art-expand">${icon('plus')}</span></button><div class="product-info"><div class="product-category">${p.category === 'yorum' ? 'MÜŞTERİ DENEYİMİ' : p.category === 'sosyal' ? 'SOSYAL BAĞLANTILAR' : 'İŞLETME ARAÇLARI'}</div><h3><button class="product-name" data-product="${p.id}">${p.name}</button></h3><p>${p.description}</p><div class="product-meta"><span>10 × 10 cm pleksi</span><span>3 bağlantı seçeneği</span></div><div class="product-price">Fiyat henüz girilmedi</div><div class="product-buttons"><button class="button outline" data-product="${p.id}">Ürünü incele ${icon('arrow')}</button><button class="buy-button" disabled aria-label="${p.name} satın al — satış henüz açık değil">Satın al</button></div></div></article>`).join('');
+  document.querySelector('#product-grid').innerHTML = shown.map(p => `<article class="product-card"><a class="product-art art-${p.tone}" href="${productPath(p.id)}" aria-label="${p.name} seçeneklerini incele"><span class="art-badge">QR + NFC</span>${cardMockup(p)}<span class="art-expand">${icon('plus')}</span></a><div class="product-info"><div class="product-category">${p.category === 'yorum' ? 'MÜŞTERİ DENEYİMİ' : p.category === 'sosyal' ? 'SOSYAL BAĞLANTILAR' : 'İŞLETME ARAÇLARI'}</div><h3><a class="product-name" href="${productPath(p.id)}">${p.name}</a></h3><p>${p.description}</p><div class="product-meta"><span>10 × 10 cm · Şeffaf / beyaz</span><span>3 bağlantı seçeneği</span></div><div class="product-price">Fiyat henüz girilmedi</div><div class="product-buttons"><a class="button outline" href="${productPath(p.id)}">Ürünü incele ${icon('arrow')}</a><button class="buy-button" disabled aria-label="${p.name} satın al — satış henüz açık değil">Satın al</button></div></div></article>`).join('');
 }
 function openProduct(id, updateHash = true) {
   const p = products.find(p => p.id === id);
   if (!p) return;
-  if (updateHash) history.replaceState(null, '', `#urun/${id}`);
-  document.querySelector('#product-detail').innerHTML = `<div class="dialog-top product-dialog-heading"><span class="eyebrow">KARTINIZI ŞEKİLLENDİRİN</span><button class="icon-button" data-close aria-label="Ürün penceresini kapat">${icon('close')}</button></div><div class="product-detail-grid"><div class="detail-media"><div class="detail-card-art art-${p.tone}" id="detail-card-art">${cardMockup(p)}</div><div class="detail-caption">Temsili tasarım · QR örnek bağlantıya gider</div><div class="detail-specs"><span>${icon('square')}10 × 10 cm</span><span>${icon('layers')}2,8–3 mm pleksi</span><span>${icon('attach')}Çift taraflı bant</span><span>${icon('corner')}Yuvarlatılmış köşe</span></div></div><div class="detail-content"><h2 id="product-title">${p.name}</h2><p class="detail-description">${p.description}</p><p class="detail-price">Fiyat henüz girilmedi</p><form id="selection-form"><fieldset><legend>1. Nasıl kullanılsın?</legend><div class="radio-cards">${Object.entries(connectionLabels).map(([value, label]) => `<label class="radio-card"><input type="radio" name="connection" value="${value}" ${value === 'hybrid' ? 'checked' : ''}><span>${label}</span></label>`).join('')}</div></fieldset><fieldset><legend>2. Bağlantı türü</legend><div class="radio-cards stacked"><label class="radio-card"><input type="radio" name="linkType" value="static" checked><span><strong>Sabit bağlantı</strong><small>Verdiğiniz adres doğrudan karta kaydedilir.</small></span></label><label class="radio-card"><input type="radio" name="linkType" value="dynamic"><span><strong>Değiştirilebilir bağlantı</strong><small>Kart aynı kalır, hedefi talebinizle güncelleriz.</small></span></label></div><p id="link-type-note" class="field-note">Basılı QR kodunun hedefi sonradan değiştirilemez.</p></fieldset>${p.id === 'menu' ? `<label class="field-label" for="menu-type">3. Menü ihtiyacınız</label><select id="menu-type" name="menuType">${Object.entries(menuLabels).map(([v, label]) => `<option value="${v}">${label}</option>`).join('')}</select><p id="menu-type-note" class="field-note">Menünüzün çalışan bağlantısı kullanılır.</p>` : ''}<div class="quantity-line"><label class="field-label" for="quantity">Adet</label><div class="quantity-control"><button type="button" data-quantity-step="-1" aria-label="Adedi azalt">${icon('minus')}</button><input id="quantity" name="quantity" type="number" inputmode="numeric" value="1" min="1" max="1000" step="1" required><button type="button" data-quantity-step="1" aria-label="Adedi artır">${icon('plus')}</button></div></div><p class="field-note">Toplu alım fiyatları henüz belirlenmedi.</p><p id="selection-error" class="error-message" role="alert"></p><div class="detail-actions"><button type="submit" id="selection-submit" class="button primary">Seçimi sepette incele ${icon('bag')}</button><button type="button" class="button disabled-purchase" disabled>Satın al</button></div><p class="preview-note">Önizleme: Bu seçim sipariş oluşturmaz. Bağlantı ve dosyalar satış açıldığında alınacaktır.</p></form><button class="custom-design" data-contact>${icon('pen')} Özel tasarım mı düşünüyorsunuz? ${icon('arrow')}</button></div></div>`;
+  if (!pageProduct) { location.href = productPath(id, homeBase); return; }
+  document.querySelector('#product-detail').innerHTML = `<div class="dialog-top product-dialog-heading"><span class="eyebrow">KARTINIZI ŞEKİLLENDİRİN</span><a class="text-link" href="../../#urunler">Tüm kartlar ${icon('arrow')}</a></div><div class="product-detail-grid"><div class="detail-media"><div class="detail-card-art art-${p.tone}" id="detail-card-art">${cardMockup(p)}</div><div class="detail-caption">Temsili tasarım · QR örnek bağlantıya gider</div><div class="detail-specs"><span>${icon('square')}10 × 10 cm</span><span>${icon('layers')}2,8–3 mm pleksi</span><span>${icon('attach')}Çift taraflı bant</span><span>${icon('corner')}Yuvarlatılmış köşe</span></div></div><div class="detail-content"><h2 id="product-title">${p.name}</h2><p class="detail-description">${p.description}</p><p class="detail-price">Fiyat henüz girilmedi</p><form id="selection-form"><div class="physical-options"><label class="field-label" for="size">Boyut<select id="size" name="size">${Object.entries(sizeLabels).map(([v, label]) => `<option value="${v}">${label}</option>`).join('')}</select></label><p class="field-note">Diğer boyutlar henüz belirlenmedi.</p><fieldset><legend>Pleksi seçimi</legend><div class="radio-cards material-options">${Object.entries(materialLabels).map(([v, label]) => `<label class="radio-card"><input type="radio" name="material" value="${v}" ${v === 'clear' ? 'checked' : ''}><span class="material-swatch swatch-${v}" aria-hidden="true"></span><span>${label}</span></label>`).join('')}</div></fieldset></div><fieldset><legend>1. Nasıl kullanılsın?</legend><div class="radio-cards">${Object.entries(connectionLabels).map(([value, label]) => `<label class="radio-card"><input type="radio" name="connection" value="${value}" ${value === 'hybrid' ? 'checked' : ''}><span>${label}</span></label>`).join('')}</div></fieldset><fieldset><legend>2. Bağlantı türü</legend><div class="radio-cards stacked"><label class="radio-card"><input type="radio" name="linkType" value="static" checked><span><strong>Sabit bağlantı</strong><small>Verdiğiniz adres doğrudan karta kaydedilir.</small></span></label><label class="radio-card"><input type="radio" name="linkType" value="dynamic"><span><strong>Değiştirilebilir bağlantı</strong><small>Kart aynı kalır, hedefi talebinizle güncelleriz.</small></span></label></div><p id="link-type-note" class="field-note">Basılı QR kodunun hedefi sonradan değiştirilemez.</p></fieldset>${p.id === 'menu' ? `<label class="field-label" for="menu-type">3. Menü ihtiyacınız</label><select id="menu-type" name="menuType">${Object.entries(menuLabels).map(([v, label]) => `<option value="${v}">${label}</option>`).join('')}</select><p id="menu-type-note" class="field-note">Menünüzün çalışan bağlantısı kullanılır.</p>` : ''}<div class="quantity-line"><label class="field-label" for="quantity">Adet</label><div class="quantity-control"><button type="button" data-quantity-step="-1" aria-label="Adedi azalt">${icon('minus')}</button><input id="quantity" name="quantity" type="number" inputmode="numeric" value="1" min="1" max="1000" step="1" required><button type="button" data-quantity-step="1" aria-label="Adedi artır">${icon('plus')}</button></div></div><p class="field-note">Toplu alım fiyatları henüz belirlenmedi.</p><p id="selection-error" class="error-message" role="alert"></p><div class="detail-actions"><button type="submit" id="selection-submit" class="button primary">Seçimi sepette incele ${icon('bag')}</button><button type="button" class="button disabled-purchase" disabled>Satın al</button></div><p class="preview-note">Önizleme: Bu seçim sipariş oluşturmaz. Bağlantı ve dosyalar satış açıldığında alınacaktır.</p></form><button class="custom-design" data-contact>${icon('pen')} Özel tasarım mı düşünüyorsunuz? ${icon('arrow')}</button></div></div>`;
   const form = document.querySelector('#selection-form');
   const summary = document.createElement('div');
   summary.className = 'selection-summary';
@@ -74,11 +80,11 @@ function openProduct(id, updateHash = true) {
   form.querySelector('.detail-actions').before(summary);
   const sync = () => {
     const values = new FormData(form);
-    document.querySelector('#detail-card-art').innerHTML = cardMockup(p, { connection: values.get('connection') });
+    document.querySelector('#detail-card-art').innerHTML = cardMockup(p, { connection: values.get('connection'), material: values.get('material') });
     document.querySelector('#link-type-note').textContent = connectionNote(values.get('connection'), values.get('linkType'));
-    document.querySelector('.detail-caption').textContent = values.get('connection') === 'nfc' ? 'Temsili tasarım · Yalnız NFC seçildi' : 'Temsili tasarım · QR örnek bağlantıya gider';
+    document.querySelector('.detail-caption').textContent = `Temsili tasarım · ${materialLabels[values.get('material')]} · ${values.get('connection') === 'nfc' ? 'Yalnız NFC' : 'QR örnek bağlantıya gider'}`;
     const quantity = Number(values.get('quantity'));
-    summary.textContent = `${connectionLabels[values.get('connection')]} · ${linkLabels[values.get('linkType')]} · ${Number.isInteger(quantity) && quantity > 0 && quantity <= 1000 ? `${quantity} adet` : 'Adedi kontrol edin'}`;
+    summary.textContent = `${sizeLabels[values.get('size')]} · ${materialLabels[values.get('material')]} · ${connectionLabels[values.get('connection')]} · ${linkLabels[values.get('linkType')]} · ${Number.isInteger(quantity) && quantity > 0 && quantity <= 1000 ? `${quantity} adet` : 'Adedi kontrol edin'}`;
     const menuType = values.get('menuType') || 'link';
     if (p.id === 'menu') {
       document.querySelector('#menu-type-note').textContent = { link: 'Menünüzün çalışan bağlantısı kullanılır.', pdf: 'Hazır PDF dosyanızı satış açıldığında iletebilirsiniz. Bu önizlemede dosya yüklenmez.', 'design-pdf': 'Önce WhatsApp üzerinden kapsam ve teklif; ardından ödeme, PDF tasarımı ve onay.', 'design-web': 'Önce WhatsApp üzerinden kapsam ve teklif; ardından ödeme, web menüsü ve onay.' }[menuType];
@@ -93,12 +99,11 @@ function openProduct(id, updateHash = true) {
     e.preventDefault();
     try {
       const values = new FormData(form);
-      const selection = makeSelection(p.id, { connection: values.get('connection'), linkType: values.get('linkType'), quantity: Number(values.get('quantity')), menuType: values.get('menuType') || 'link' });
-      if (requiresQuote(selection)) { openContact(`${p.name} · ${menuLabels[selection.menuType]} · ${selection.quantity} adet`); return; }
+      const selection = makeSelection(p.id, { connection: values.get('connection'), linkType: values.get('linkType'), quantity: Number(values.get('quantity')), size: values.get('size'), material: values.get('material'), menuType: values.get('menuType') || 'link' });
+      if (requiresQuote(selection)) { openContact(`${p.name} · ${menuLabels[selection.menuType]} · ${sizeLabels[selection.size]} · ${materialLabels[selection.material]} · ${connectionLabels[selection.connection]} · ${linkLabels[selection.linkType]} · ${selection.quantity} adet`); return; }
       cart = addToCart(cart, selection);
       document.querySelector('#cart-count').textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-      document.querySelector('#product-dialog').close();
-      history.replaceState(null, '', '#urunler');
+      document.querySelector('#selection-error').textContent = '';
       renderCart();
       showDialog('cart-dialog');
       notify('Seçiminiz önizleme sepetine eklendi.');
@@ -109,9 +114,15 @@ function openProduct(id, updateHash = true) {
     input.value = Math.min(1000, Math.max(1, (Number(input.value) || 1) + Number(button.dataset.quantityStep)));
     sync();
   }));
-  showDialog('product-dialog');
+  document.querySelectorAll('[data-menu-choice]').forEach(button => button.addEventListener('click', () => {
+    form.elements.menuType.value = button.dataset.menuChoice;
+    sync();
+    document.querySelector('#secim').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    form.elements.menuType.focus({ preventScroll: true });
+  }));
 }
 function renderCart() {
+  saveCart();
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   document.querySelector('#cart-count').textContent = count;
   document.querySelector('#cart-title-count').textContent = count ? `(${count})` : '';
@@ -122,7 +133,7 @@ function renderCart() {
   }
   content.innerHTML = `<p class="cart-preview-note">Bu bir önizleme sepetidir; sipariş veya ödeme oluşturmaz.</p><div class="cart-items">${cart.map(item => {
     const p = products.find(p => p.id === item.productId);
-    return `<article class="cart-item"><div class="cart-thumb art-${p.tone}">${productMark(p)}</div><div class="cart-item-info"><h3>${p.name}</h3><p>${connectionLabels[item.connection]} · ${linkLabels[item.linkType]}</p>${item.menuType ? `<p>${menuLabels[item.menuType]}</p>` : ''}<span class="cart-item-price">Fiyat henüz girilmedi</span><div class="cart-item-actions"><label>Adet <input type="number" min="1" max="1000" step="1" value="${item.quantity}" data-cart-quantity="${item.key}" aria-label="${p.name} adedi"></label><button class="remove-item" data-remove="${item.key}" aria-label="${p.name} sepetten kaldır">${icon('trash')} Kaldır</button></div></div></article>`;
+    return `<article class="cart-item"><div class="cart-thumb art-${p.tone}">${productMark(p)}</div><div class="cart-item-info"><h3>${p.name}</h3><p>${sizeLabels[item.size]} · ${materialLabels[item.material]}</p><p>${connectionLabels[item.connection]} · ${linkLabels[item.linkType]}</p>${item.menuType ? `<p>${menuLabels[item.menuType]}</p>` : ''}<span class="cart-item-price">Fiyat henüz girilmedi</span><div class="cart-item-actions"><label>Adet <input type="number" min="1" max="1000" step="1" value="${item.quantity}" data-cart-quantity="${item.key}" aria-label="${p.name} adedi"></label><button class="remove-item" data-remove="${item.key}" aria-label="${p.name} sepetten kaldır">${icon('trash')} Kaldır</button></div></div></article>`;
   }).join('')}</div><div class="cart-summary"><div><span>Ürün toplamı</span><strong>Fiyat henüz girilmedi</strong></div><div><span>Kargo</span><span>Henüz belirlenmedi</span></div><p>Fiyatlar, kargo ve toplu alım koşulları satış açılmadan önce açıklanacaktır.</p><button class="button disabled-purchase" disabled>Satın al · Satış henüz açık değil ${icon('shield')}</button></div><button class="button outline continue-shopping" data-close>Ürünleri incelemeye devam et</button>`;
   content.querySelectorAll('[data-remove]').forEach(button => button.addEventListener('click', () => { cart = cart.filter(item => item.key !== button.dataset.remove); renderCart(); notify('Ürün sepetten kaldırıldı.'); }));
   content.querySelectorAll('[data-cart-quantity]').forEach(input => input.addEventListener('change', () => {
@@ -131,13 +142,14 @@ function renderCart() {
   }));
 }
 function openContact(selection = '') {
+  document.querySelector('#whatsapp-link').href = contactUrl(selection ? `Merhaba, şu seçim için bilgi ve teklif almak istiyorum: ${selection}` : '');
   document.querySelector('#contact-selection').textContent = selection;
   document.querySelector('#contact-selection').hidden = !selection;
   if (!document.querySelector('#contact-dialog').open) showDialog('contact-dialog');
 }
+if (!pageProduct) {
 document.querySelector('#hero-card-front').innerHTML = cardMockup(products[0]);
 document.querySelector('#hero-card-back').innerHTML = cardMockup(products[1]);
-document.querySelector('#year').textContent = new Date().getFullYear();
 renderCatalog();
 document.querySelector('#baglanti').insertAdjacentHTML('beforeend', `<div class="connection-demo"><div class="demo-intro"><span class="eyebrow">KÜÇÜK BİR ÖRNEK</span><h3>Kart aynı. Hedef farklı.</h3><p>Bir hedef seçerek değiştirilebilir bağlantının mantığını görün.</p></div><div class="demo-route"><div class="demo-source">${icon('qr')}<span>Kartınızdaki<br><strong>sabit adres</strong></span></div><span class="demo-arrow">${icon('arrow')}</span><div id="demo-destination" class="demo-destination" role="status">${icon('globe')}<span>Google<br><strong>Yorum sayfanız</strong></span></div></div><div class="demo-buttons" role="group" aria-label="Örnek bağlantı hedefi"><button class="active" data-demo-target="google" aria-pressed="true">Google yorum</button><button data-demo-target="instagram" aria-pressed="false">Instagram</button><button data-demo-target="menu" aria-pressed="false">Dijital menü</button></div><p class="demo-footnote">Etkileşimli anlatım örneğidir. Gerçek kart bağlantısı değiştirilmez.</p></div>`);
 document.querySelectorAll('[data-demo-target]').forEach(button => button.addEventListener('click', () => {
@@ -145,10 +157,14 @@ document.querySelectorAll('[data-demo-target]').forEach(button => button.addEven
   document.querySelector('#demo-destination').innerHTML = `${icon(target[0])}<span>${target[1]}<br><strong>${target[2]}</strong></span>`;
   document.querySelectorAll('[data-demo-target]').forEach(b => { b.classList.toggle('active', b === button); b.setAttribute('aria-pressed', String(b === button)); });
 }));
+} else { openProduct(pageProduct, false); }
+document.querySelector('#year').textContent = new Date().getFullYear();
+renderCart();
+
 hydrate();
 document.addEventListener('click', e => {
   const productButton = e.target.closest('[data-product]');
-  if (productButton) { openProduct(productButton.dataset.product); return; }
+  if (productButton) { location.href = productPath(productButton.dataset.product, homeBase); return; }
   const filter = e.target.closest('[data-filter]');
   if (filter) {
     activeFilter = filter.dataset.filter;
@@ -157,6 +173,12 @@ document.addEventListener('click', e => {
     return;
   }
   if (e.target.closest('[data-contact]')) openContact();
+  const copyButton = e.target.closest('[data-copy-demo]');
+  if (copyButton) {
+    const status = document.querySelector('[data-copy-status]');
+    navigator.clipboard?.writeText('Örnek İşletme — Gerçek hesap bilgisi değildir.').then(() => { status.textContent = 'Örnek metin kopyalandı. Gerçek IBAN içermez.'; }).catch(() => { status.textContent = 'Kopyalama kullanılamıyor. Bu yalnızca bir gösterimdir.'; });
+    if (!navigator.clipboard) status.textContent = 'Kopyalama bu tarayıcıda kullanılamıyor. Bu yalnızca bir gösterimdir.';
+  }
   const closeButton = e.target.closest('[data-close]');
   if (closeButton) closeButton.closest('dialog').close();
 });
@@ -181,9 +203,9 @@ document.querySelectorAll('dialog').forEach(dialog => {
   });
 });
 function routeProduct() {
-  if (location.hash.startsWith('#urun/')) {
+  if (!pageProduct && location.hash.startsWith('#urun/')) {
     const id = location.hash.slice(6);
-    if (products.some(p => p.id === id) && !document.querySelector('#product-dialog').open) openProduct(id, false);
+    if (products.some(p => p.id === id)) location.replace(productPath(id));
   }
 }
 window.addEventListener('hashchange', routeProduct);
