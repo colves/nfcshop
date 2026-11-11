@@ -3,7 +3,7 @@
 11 Kasım 2026.
 
 ## Otomatik kontroller
-- `npm test`: 6 test başarılı. Fiyatsız katalog, seçenek bazlı sepet birleştirme, geçersiz adetler, menü teklif ayrımı, URL protokol doğrulama ve sepet adet değişikliği.
+- `npm test`: 7 test başarılı. Bağlantı türüne özel açıklamalar, fiyatsız katalog, seçenek bazlı sepet birleştirme, geçersiz adetler, menü teklif ayrımı, URL protokol doğrulama ve sepet adet değişikliği.
 - `npm run build:pages`: başarılı. Vite derlemesi, yerel yazı tipleri ve main:/docs yayın kopyası.
 - `git diff --check`: boşluk hatası yok.
 
@@ -19,3 +19,9 @@
 
 ## Bilinçli sınırlar
 Ödeme, kalıcı sipariş, PDF yükleme, NFC yazımı, dinamik yönlendirme ve gerçek menü barındırma bu önizlemede uygulanmadı. Tamamlanacaklar listesi bu işleri ve gerekli işletme kararlarını içeriyor. Kitapların tam metinleri okunmadı; erişim sınırları tasarım notlarında açık.
+
+## İkinci iyileştirme
+- Ürün penceresinde bağlantı/adet seçimleri anlık özetleniyor; adet düğmeleri de özeti güncelliyor.
+- Yalnız NFC seçilince yeniden yazım için fiziksel erişim açıklanıyor ve QR örnek notu kaldırılıyor.
+- Google, Instagram ve menü arasında geçiş yapılabilen örnek yönlendirme anlatımı eklendi; gerçek hizmet olmadığı açıkça belirtiliyor.
+- Tarayıcıda “Yalnız NFC · Sabit bağlantı · 2 adet” özeti ve menü örneği doğrulandı.

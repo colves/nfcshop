@@ -1,7 +1,7 @@
 import '@fontsource-variable/manrope';
 import './readability.css';
 import QRCode from 'qrcode';
-import { products, makeSelection, addToCart, changeQuantity, requiresQuote, connectionLabels, linkLabels, menuLabels } from './shop.js';
+import { products, makeSelection, addToCart, changeQuantity, requiresQuote, connectionLabels, linkLabels, menuLabels, connectionNote } from './shop.js';
 
 const paths = {
   arrow: '<path d="M5 12h14m-5-5 5 5-5 5"/>',
@@ -68,10 +68,17 @@ function openProduct(id, updateHash = true) {
   if (updateHash) history.replaceState(null, '', `#urun/${id}`);
   document.querySelector('#product-detail').innerHTML = `<div class="dialog-top product-dialog-heading"><span class="eyebrow">KARTINIZI ŞEKİLLENDİRİN</span><button class="icon-button" data-close aria-label="Ürün penceresini kapat">${icon('close')}</button></div><div class="product-detail-grid"><div class="detail-media"><div class="detail-card-art art-${p.tone}" id="detail-card-art">${cardMockup(p)}</div><div class="detail-caption">Temsili tasarım · QR örnek bağlantıya gider</div><div class="detail-specs"><span>${icon('square')}10 × 10 cm</span><span>${icon('layers')}2,8–3 mm pleksi</span><span>${icon('attach')}Çift taraflı bant</span><span>${icon('corner')}Yuvarlatılmış köşe</span></div></div><div class="detail-content"><h2 id="product-title">${p.name}</h2><p class="detail-description">${p.description}</p><p class="detail-price">Fiyat henüz girilmedi</p><form id="selection-form"><fieldset><legend>1. Nasıl kullanılsın?</legend><div class="radio-cards">${Object.entries(connectionLabels).map(([value, label]) => `<label class="radio-card"><input type="radio" name="connection" value="${value}" ${value === 'hybrid' ? 'checked' : ''}><span>${label}</span></label>`).join('')}</div></fieldset><fieldset><legend>2. Bağlantı türü</legend><div class="radio-cards stacked"><label class="radio-card"><input type="radio" name="linkType" value="static" checked><span><strong>Sabit bağlantı</strong><small>Verdiğiniz adres doğrudan karta kaydedilir.</small></span></label><label class="radio-card"><input type="radio" name="linkType" value="dynamic"><span><strong>Değiştirilebilir bağlantı</strong><small>Kart aynı kalır, hedefi talebinizle güncelleriz.</small></span></label></div><p id="link-type-note" class="field-note">Basılı QR kodunun hedefi sonradan değiştirilemez.</p></fieldset>${p.id === 'menu' ? `<label class="field-label" for="menu-type">3. Menü ihtiyacınız</label><select id="menu-type" name="menuType">${Object.entries(menuLabels).map(([v, label]) => `<option value="${v}">${label}</option>`).join('')}</select><p id="menu-type-note" class="field-note">Menünüzün çalışan bağlantısı kullanılır.</p>` : ''}<div class="quantity-line"><label class="field-label" for="quantity">Adet</label><div class="quantity-control"><button type="button" data-quantity-step="-1" aria-label="Adedi azalt">${icon('minus')}</button><input id="quantity" name="quantity" type="number" inputmode="numeric" value="1" min="1" max="1000" step="1" required><button type="button" data-quantity-step="1" aria-label="Adedi artır">${icon('plus')}</button></div></div><p class="field-note">Toplu alım fiyatları henüz belirlenmedi.</p><p id="selection-error" class="error-message" role="alert"></p><div class="detail-actions"><button type="submit" id="selection-submit" class="button primary">Seçimi sepette incele ${icon('bag')}</button><button type="button" class="button disabled-purchase" disabled>Satın al</button></div><p class="preview-note">Önizleme: Bu seçim sipariş oluşturmaz. Bağlantı ve dosyalar satış açıldığında alınacaktır.</p></form><button class="custom-design" data-contact>${icon('pen')} Özel tasarım mı düşünüyorsunuz? ${icon('arrow')}</button></div></div>`;
   const form = document.querySelector('#selection-form');
+  const summary = document.createElement('div');
+  summary.className = 'selection-summary';
+  summary.setAttribute('role', 'status');
+  form.querySelector('.detail-actions').before(summary);
   const sync = () => {
     const values = new FormData(form);
     document.querySelector('#detail-card-art').innerHTML = cardMockup(p, { connection: values.get('connection') });
-    document.querySelector('#link-type-note').textContent = values.get('linkType') === 'static' ? 'Basılı QR kodunun hedefi sonradan değiştirilemez.' : 'Hedef değişikliğini biz yönetiriz. Hizmet süresi ve koşulları satış öncesinde açıklanacak.';
+    document.querySelector('#link-type-note').textContent = connectionNote(values.get('connection'), values.get('linkType'));
+    document.querySelector('.detail-caption').textContent = values.get('connection') === 'nfc' ? 'Temsili tasarım · Yalnız NFC seçildi' : 'Temsili tasarım · QR örnek bağlantıya gider';
+    const quantity = Number(values.get('quantity'));
+    summary.textContent = `${connectionLabels[values.get('connection')]} · ${linkLabels[values.get('linkType')]} · ${Number.isInteger(quantity) && quantity > 0 && quantity <= 1000 ? `${quantity} adet` : 'Adedi kontrol edin'}`;
     const menuType = values.get('menuType') || 'link';
     if (p.id === 'menu') {
       document.querySelector('#menu-type-note').textContent = { link: 'Menünüzün çalışan bağlantısı kullanılır.', pdf: 'Hazır PDF dosyanızı satış açıldığında iletebilirsiniz. Bu önizlemede dosya yüklenmez.', 'design-pdf': 'Önce WhatsApp üzerinden kapsam ve teklif; ardından ödeme, PDF tasarımı ve onay.', 'design-web': 'Önce WhatsApp üzerinden kapsam ve teklif; ardından ödeme, web menüsü ve onay.' }[menuType];
@@ -80,6 +87,8 @@ function openProduct(id, updateHash = true) {
     document.querySelector('#selection-submit').innerHTML = quote ? `WhatsApp ile teklif al ${icon('message')}` : `Seçimi sepette incele ${icon('bag')}`;
   };
   form.addEventListener('change', sync);
+  form.addEventListener('input', sync);
+  sync();
   form.addEventListener('submit', e => {
     e.preventDefault();
     try {
@@ -98,6 +107,7 @@ function openProduct(id, updateHash = true) {
   form.querySelectorAll('[data-quantity-step]').forEach(button => button.addEventListener('click', () => {
     const input = form.querySelector('#quantity');
     input.value = Math.min(1000, Math.max(1, (Number(input.value) || 1) + Number(button.dataset.quantityStep)));
+    sync();
   }));
   showDialog('product-dialog');
 }
@@ -129,6 +139,12 @@ document.querySelector('#hero-card-front').innerHTML = cardMockup(products[0]);
 document.querySelector('#hero-card-back').innerHTML = cardMockup(products[1]);
 document.querySelector('#year').textContent = new Date().getFullYear();
 renderCatalog();
+document.querySelector('#baglanti').insertAdjacentHTML('beforeend', `<div class="connection-demo"><div class="demo-intro"><span class="eyebrow">KÜÇÜK BİR ÖRNEK</span><h3>Kart aynı. Hedef farklı.</h3><p>Bir hedef seçerek değiştirilebilir bağlantının mantığını görün.</p></div><div class="demo-route"><div class="demo-source">${icon('qr')}<span>Kartınızdaki<br><strong>sabit adres</strong></span></div><span class="demo-arrow">${icon('arrow')}</span><div id="demo-destination" class="demo-destination" role="status">${icon('globe')}<span>Google<br><strong>Yorum sayfanız</strong></span></div></div><div class="demo-buttons" role="group" aria-label="Örnek bağlantı hedefi"><button class="active" data-demo-target="google" aria-pressed="true">Google yorum</button><button data-demo-target="instagram" aria-pressed="false">Instagram</button><button data-demo-target="menu" aria-pressed="false">Dijital menü</button></div><p class="demo-footnote">Etkileşimli anlatım örneğidir. Gerçek kart bağlantısı değiştirilmez.</p></div>`);
+document.querySelectorAll('[data-demo-target]').forEach(button => button.addEventListener('click', () => {
+  const target = {google: ['globe', 'Google', 'Yorum sayfanız'], instagram: ['instagram', 'Instagram', 'İşletme profiliniz'], menu: ['menu', 'Dijital menü', 'Menü sayfanız']}[button.dataset.demoTarget];
+  document.querySelector('#demo-destination').innerHTML = `${icon(target[0])}<span>${target[1]}<br><strong>${target[2]}</strong></span>`;
+  document.querySelectorAll('[data-demo-target]').forEach(b => { b.classList.toggle('active', b === button); b.setAttribute('aria-pressed', String(b === button)); });
+}));
 hydrate();
 document.addEventListener('click', e => {
   const productButton = e.target.closest('[data-product]');

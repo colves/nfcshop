@@ -1,6 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { products, makeSelection, addToCart, changeQuantity, requiresQuote, isSafeUrl } from '../src/shop.js';
+import { products, makeSelection, addToCart, changeQuantity, requiresQuote, isSafeUrl, connectionNote } from '../src/shop.js';
+
+test('connection guidance distinguishes rewritable NFC from printed QR', () => {
+  assert.match(connectionNote('nfc', 'static'), /fiziksel/);
+  assert.doesNotMatch(connectionNote('nfc', 'static'), /Basılı QR/);
+  assert.match(connectionNote('qr', 'static'), /Basılı QR/);
+  assert.match(connectionNote('hybrid', 'dynamic'), /talebiniz/);
+});
 
 test('preview catalog never exposes a buyable or invented price', () => {
   assert.equal(products.length, 7);

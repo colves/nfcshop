@@ -9,6 +9,11 @@ export const products = [
 ];
 export const connectionLabels = { hybrid: 'QR + NFC', nfc: 'Yalnız NFC', qr: 'Yalnız QR' };
 export const linkLabels = { static: 'Sabit bağlantı', dynamic: 'Değiştirilebilir bağlantı' };
+export function connectionNote(connection, linkType) {
+  if (linkType === 'dynamic') return 'Kart değişmeden hedefi talebinizle güncelleriz. Hizmet süresi ve koşulları satış öncesinde açıklanacak.';
+  if (connection === 'nfc') return 'NFC kilitlenmemişse karta fiziksel erişimle yeniden yazılabilir. Uzaktan değişiklik için değiştirilebilir bağlantıyı seçin.';
+  return 'Basılı QR kodunun hedefi sonradan değiştirilemez. Değişiklik ihtiyacınız varsa değiştirilebilir bağlantıyı seçin.';
+}
 export const menuLabels = { link: 'Hazır menü bağlantım var', pdf: 'Hazır PDF menüm var', 'design-pdf': 'PDF menü hazırlatmak istiyorum', 'design-web': 'Web menüsü hazırlatmak istiyorum' };
 export function validQuantity(n) { return Number.isInteger(n) && n >= 1 && n <= 1000; }
 export function makeSelection(productId, options = {}) {
