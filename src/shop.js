@@ -1,0 +1,34 @@
+export const products = [
+  { id: 'google', name: 'Google Yorum Kartı', category: 'yorum', label: 'Google', headline: 'Deneyiminizi paylaşın.', subtitle: 'Yorum bırakmak bir dokunuş uzakta.', description: 'Müşterilerinizi işletmenizin Google yorum sayfasına ulaştırın.', tone: 'google', price: null, symbol: 'G' },
+  { id: 'instagram', name: 'Instagram Kartı', category: 'sosyal', label: 'Instagram', headline: 'Bizi takip edin.', subtitle: 'Yeni paylaşımlarımızda buluşalım.', description: 'İşletmenizin Instagram profilini kolayca paylaşın.', tone: 'instagram', price: null, symbol: 'instagram' },
+  { id: 'whatsapp', name: 'WhatsApp Kartı', category: 'sosyal', label: 'WhatsApp', headline: 'Bir mesaj kadar yakın.', subtitle: 'Sorularınız için bize yazın.', description: 'Müşterilerinizin WhatsApp sohbetinize ulaşmasını kolaylaştırın.', tone: 'whatsapp', price: null, symbol: 'message' },
+  { id: 'menu', name: 'Dijital Menü Kartı', category: 'isletme', label: 'Dijital menü', headline: 'Menümüze göz atın.', subtitle: 'Lezzetli bir başlangıç yapalım.', description: 'Hazır bağlantı, PDF veya size özel hazırlanan menünüzü paylaşın.', tone: 'menu', price: null, symbol: 'menu' },
+  { id: 'web', name: 'İnternet Sitesi Kartı', category: 'isletme', label: 'Web sitesi', headline: 'Bizi keşfedin.', subtitle: 'İşletmemizle çevrim içi tanışın.', description: 'Ziyaretçilerinizi doğrudan internet sitenizle buluşturun.', tone: 'web', price: null, symbol: 'globe' },
+  { id: 'iban', name: 'IBAN Paylaşım Kartı', category: 'isletme', label: 'IBAN', headline: 'Hesap bilgilerimiz.', subtitle: 'Bilgilere kolayca ulaşın.', description: 'Hesap adı ve IBAN bilginizi gösteren sayfaya erişim sağlayın.', tone: 'iban', price: null, symbol: 'bank' },
+  { id: 'ilan', name: 'İlan Bağlantısı Kartı', category: 'isletme', label: 'İlanlar', headline: 'İlanlarımızı inceleyin.', subtitle: 'Detaylar bir dokunuş uzakta.', description: 'İlanınızı veya mağaza sayfanızı tek bağlantıyla paylaşın.', tone: 'ilan', price: null, symbol: 'home' },
+];
+export const connectionLabels = { hybrid: 'QR + NFC', nfc: 'Yalnız NFC', qr: 'Yalnız QR' };
+export const linkLabels = { static: 'Sabit bağlantı', dynamic: 'Değiştirilebilir bağlantı' };
+export const menuLabels = { link: 'Hazır menü bağlantım var', pdf: 'Hazır PDF menüm var', 'design-pdf': 'PDF menü hazırlatmak istiyorum', 'design-web': 'Web menüsü hazırlatmak istiyorum' };
+export function validQuantity(n) { return Number.isInteger(n) && n >= 1 && n <= 1000; }
+export function makeSelection(productId, options = {}) {
+  const { connection = 'hybrid', linkType = 'static', quantity = 1, menuType = 'link' } = options;
+  if (!products.some(p => p.id === productId) || !connectionLabels[connection] || !linkLabels[linkType] || !validQuantity(quantity) || (productId === 'menu' && !menuLabels[menuType])) throw new Error('Ürün seçeneklerini ve 1–1000 arasındaki adedi kontrol edin.');
+  const actualMenuType = productId === 'menu' ? menuType : null;
+  return { productId, connection, linkType, quantity, menuType: actualMenuType, key: [productId, connection, linkType, actualMenuType || ''].join(':') };
+}
+export function addToCart(cart, selection) {
+  const existing = cart.find(item => item.key === selection.key);
+  if (!existing) return [...cart, { ...selection }];
+  const quantity = existing.quantity + selection.quantity;
+  if (!validQuantity(quantity)) throw new Error('Bir ürün seçimi için en fazla 1000 adet ekleyebilirsiniz.');
+  return cart.map(item => item.key === selection.key ? { ...item, quantity } : item);
+}
+export function changeQuantity(cart, key, quantity) {
+  if (!validQuantity(quantity)) throw new Error('Adet 1–1000 arasında tam sayı olmalı.');
+  return cart.map(item => item.key === key ? { ...item, quantity } : item);
+}
+export function requiresQuote(selection) { return selection.productId === 'menu' && ['design-pdf', 'design-web'].includes(selection.menuType); }
+export function isSafeUrl(value) {
+  try { const u = new URL(value); return ['https:', 'http:'].includes(u.protocol) && !u.username && !u.password; } catch { return false; }
+}
