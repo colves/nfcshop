@@ -20,6 +20,13 @@
 ## Bilinçli sınırlar
 Ödeme, kalıcı sipariş, PDF yükleme, NFC yazımı, dinamik yönlendirme ve gerçek menü barındırma bu önizlemede uygulanmadı. Tamamlanacaklar listesi bu işleri ve gerekli işletme kararlarını içeriyor. Kitapların tam metinleri okunmadı; erişim sınırları tasarım notlarında açık.
 
+## Sadeleştirme kontrolü
+
+- 11 test ve Pages derlemesi geçti. Yedi sayfa dar mobil görünümde 305px belge / 305px içerik genişliğiyle taşmasız; örnek arayüzler korunuyor.
+- Bağlantı seçeneklerini açıp yalnız NFC ve dinamik seçme, kapatınca seçili özetin korunması ve sepete doğru eklenmesi tarayıcıda doğrulandı.
+- Açılabilir menü yardımından web menüsünü seçme ve doğru seçeneklerle WhatsApp teklif taslağına geçme doğrulandı. Otomatik mesaj gönderilmedi.
+- Fiyatlar boş ve tüm satın alma düğmeleri devre dışı. Ticari işlev eklenmedi.
+
 ## Bağımsız sayfalar, ölçüler ve ürün türüne özel tasarımlar
 
 - 11 test geçti; tüm statik sayfalarda tek h1, doğru iç içe varlık yolları ve doğrudan açılabilir adresler kontrol edildi. Vite/Pages derlemesi başarılı.

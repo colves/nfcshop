@@ -21,11 +21,17 @@ Kullanıcı yalnız içerik farkı değil, sayfa tasarımlarının da ürün tü
 | Kart | Yerleşim ve görsel anlatım |
 |---|---|
 | Google yorum | Yorum daveti, QR/NFC girişleri ve değerlendirme sayfasına giden dikey akış |
-| Instagram | Ortalanmış açılış ve geniş editoryal profil vitrini; gerçek takipçi/istatistik yok |
+| Instagram | Kısa giriş yanında sade profil vitrini; gerçek takipçi/istatistik yok |
 | WhatsApp | İşletme sohbet başlığı ve iki yönlü temsili konuşma |
 | Menü | Koyu restoran sunumu, mobil menü düzeni ve dört hizmet yolu |
-| IBAN | Hesap dökümü, üç adımlı bilgi/transfer ayrımı ve bağımsız demo bağlantısı |
+| IBAN | Hesap dökümü ve bağımsız kopyalama demosu bağlantısı; bilgi/transfer ayrımı kısa açıklamada |
 | Web | Üstte geniş başlık/aksiyon, altta tam genişlikte tarayıcı ve site vitrini |
 | İlan | Tek ilan detay kartı ile mağaza/profil yolu bulunan ilan panosu |
 
 Örnekler temsili ve açıkça etiketlidir. Gerçek yorum, profil istatistiği, müşteri hesabı, ilan veya sipariş üretilmez. Kullanıcı nihai fotoğrafları daha sonraya bıraktığından bu aşamada fotoğraf üretilmedi.
+
+## Sadeleştirme
+
+Kullanıcı örnekleri ve özel sayfaları beğendi; görünümü kalabalık buldu. Örnek arayüzler korunarak tekrarlanan fayda/adım bölümü, ayrı ikinci IBAN daveti, altı bağlantılı ilgili ürünler alanı ve yinelenen tanıtım metinleri kaldırıldı. Sayfa artık ürün örneği, seçenekler ve açılabilir kısa sorulardan oluşuyor.
+
+Bağlantı seçenekleri, seçili QR/NFC ve sabit/dinamik bilgisini her zaman gösteren açılır bir bölümde. Boyut, malzeme, adet ve eylemler görünür; uzun menü karşılaştırması soru alanından isteğe bağlı açılır. Seçenekler, sepet ve WhatsApp teklif akışı korunur. Fiyat ve satın alma kapalıdır. Kaynak: src/product-calm.css ve ürün görünüm modülleri.
