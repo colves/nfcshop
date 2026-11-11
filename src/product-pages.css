@@ -1,4 +1,5 @@
 /* Product pages extend the existing green, quiet storefront system. */
+.iban-demo-invite{display:flex;align-items:center;justify-content:space-between;gap:30px;background:var(--mint);border:1px solid var(--line);border-radius:14px;padding:30px;margin-bottom:45px}.iban-demo-invite .eyebrow{display:block;margin-bottom:8px}.iban-demo-invite h2{font-size:24px;letter-spacing:-.7px;line-height:1.35}.iban-demo-invite p{font-size:13px;color:var(--muted);max-width:540px;margin-top:10px}.iban-demo-invite .button{flex-shrink:0}@media(max-width:700px){.iban-demo-invite{align-items:start;flex-direction:column;padding:23px;gap:20px;margin-bottom:30px}.iban-demo-invite h2{font-size:23px}.iban-demo-invite .button{font-size:12px}}
 .product-page { padding-bottom: 60px; }
 .breadcrumbs { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding-block:24px; font-size:12px; color:var(--muted); }
 .breadcrumbs a:hover { color:var(--green); text-decoration:underline; }

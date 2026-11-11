@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { products, makeSelection, addToCart, restoreCart, contactUrl } from '../src/shop.js';
+import { products, makeSelection, addToCart, restoreCart, contactUrl, sizeLabels } from '../src/shop.js';
 import { productPages, productPath, productIdFromPath } from '../src/product-pages.js';
 import { productHtml } from '../scripts/product-html.mjs';
 
@@ -13,6 +13,15 @@ test('material choices stay distinct across navigation and corrupted saved carts
   for (const bad of ['invalid', 'null', '{}', '[{"productId":"missing"}]', '[{"productId":"google","material":"wood"}]']) assert.deepEqual(restoreCart(bad),[]);
   assert.throws(()=>makeSelection('google',{size:'20x20'}));
   assert.throws(()=>makeSelection('google',{material:'wood'}));
+});
+
+test('sizes cover 5 through 15 cm and different sizes survive as distinct cart lines', () => {
+  assert.equal(Object.keys(sizeLabels).length,11);
+  for(let n=5;n<=15;n++) assert.equal(makeSelection('iban',{size:`${n}x${n}`}).size,`${n}x${n}`);
+  let cart=addToCart([],makeSelection('iban',{size:'5x5',quantity:2}));
+  cart=addToCart(cart,makeSelection('iban',{size:'15x15',quantity:3}));
+  assert.equal(restoreCart(JSON.stringify(cart)).length,2);
+  for(const size of ['4x4','16x16','5x15']) assert.throws(()=>makeSelection('iban',{size}));
 });
 
 test('each static product page is directly addressable, unique and has working nested assets', async () => {

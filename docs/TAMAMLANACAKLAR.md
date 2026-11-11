@@ -4,13 +4,13 @@
 
 ## Kullanıcıdan gereken kararlar
 
-1. **Boyut:** 10×10 cm dışında hangi ölçüler üretilecek? Şimdilik yalnız doğrulanmış 10×10 seçilebilir. Şeffaf/beyaz seçenekleri eklendi.
-2. **Üretim ve çıkış:** Gönderiler Sakarya'dan mı Kütahya'dan mı çıkacak? Bağlantı/tasarım onayından sonra hazır kart kaç iş gününde paketlenebilir? Taşıma süresi bu hazırlıktan ayrı.
+1. **Boyut tamamlandı:** 5×5–15×15 cm, 1 cm aralıklarla kare ölçüler. Şeffaf/beyaz seçenekleri mevcut; varsayılan 10×10.
+2. **Üretim süresi sonra:** Sakarya veya Kütahya çıkış mümkün. Hazırlama ve teslim günü henüz belirlenmedi; kullanıcı şimdilik bekletiyor.
 3. **Menü kapsamı:** İlk özel web menüsü için ürün/kategori sayısı, dil, revizyon hakkı ve sonraki güncellemelerin kapsamı ne olacak? Başlangıç önerisi tek şube ve Türkçe; sipariş/POS/mutfak modülü ilk kapsamda yok.
-4. **Dinamik hizmet:** İlk ücrete dahil süre ve hedef değişikliği koşulları ne olacak? Süre sonunda yenileme ve bağlantının devam süreci açıklanmalı; ömür boyu vaadi yok.
-5. **IBAN hizmeti:** Hazır müşteri sayfasına yönlendirme mi, hesap sahibi/banka/IBAN sayfasını bizim hazırlamamız mı? Öneri bize ait sade sayfa; gerçek IBAN şimdi istenmez.
-6. **Kişiselleştirme:** Logo ekleme standart mı ayrıca ücretli mi? Kaç revizyon olacak ve üretim öncesi onay nasıl alınacak?
-7. **Satıcı:** Satışı hangi işletme yapacak? Ticari unvan, destek e-postası, iş/iade adresi ve ödeme hesabı gerçek satıcıya göre tamamlanacak. Bilgiler uydurulmaz.
+4. **Dinamik altyapı kararı:** Kullanıcı kendi alan adını alacak, yönlendirmeler oradan yapılacak. Alan adı henüz alınmadı. İlk ücrete dahil hizmet süresi ve değişiklik koşulları henüz belirlenmedi. Süre sonunda yenileme ve bağlantının devam süreci açıklanmalı; ömür boyu vaadi yok.
+5. **IBAN kararı tamamlandı:** Sayfayı biz hazırlayacağız. Araştırmaya dayalı demo /ornek/iban/ adresinde; banka, hesap sahibi ve IBAN kopyalama içerir. Gerçek hesap bilgisi yok.
+6. **Logo beklemede:** Kullanıcı logo ekleme konusunu sonraya bıraktı; şimdi yeniden soru veya uygulama yok.
+7. **Satıcı beklemede:** Kullanıcı şimdilik hiçbir işlem istemiyor. Satıcı bilgisi, hesap başvurusu veya ticari kayıt değişikliği yapılmaz.
 
 ## Araştırma, teklif ve test ile netleşecek işler
 
@@ -25,7 +25,7 @@
 ## Tamamlanan eklemeler
 
 - Yedi ürün için doğrudan açılabilen ayrı HTML adresi, hizmete özel anlatım/örnek ve ilgili ürün bağlantıları.
-- Boyut alanı, şeffaf/beyaz seçimi, QR/NFC ve sabit/dinamik seçenekleri. Belirlenmemiş ölçü satışta gösterilmez.
+- 5×5–15×15 cm kare boyutlar, şeffaf/beyaz seçimi, QR/NFC ve sabit/dinamik seçenekleri.
 - Menüde dört hizmet seçeneği; tasarım seçiminde WhatsApp teklif taslağına seçeneklerin aktarımı.
 - WhatsApp hattı eklendi; bağlantıyı açıp mesajı göndermeye ziyaretçi karar verir. Otomatik gönderim yok.
 - Sepet aynı sekmede sayfa geçişlerinde ve yenilemede korunur. Yalnız ürün seçenekleri sessionStorage'da tutulur.
@@ -44,4 +44,4 @@
 
 ## Önizleme sınırları
 
-Gerçek sipariş, ödeme, dosya yükleme, müşteri hesabı, menü yayını veya dinamik yönlendirme hizmeti yoktur. Kartlardaki örnek QR, https://example.org adresini kodlar. IBAN demosu gerçek hesap içermez. WhatsApp, ziyaretçi mesajı gönderirse üçüncü taraf iletişim kanalıdır.
+Gerçek sipariş, ödeme, dosya yükleme, müşteri hesabı, menü yayını veya dinamik yönlendirme hizmeti yoktur. Kartlardaki örnek QR, https://example.org adresini kodlar. IBAN demosu geçersiz TR00 örneği içerir; gerçek hesap değildir. WhatsApp, ziyaretçi mesajı gönderirse üçüncü taraf iletişim kanalıdır.

@@ -24,7 +24,7 @@ npm run build:pages
 ## Hazır olanlar
 - Yedi ürün, kategori filtreleri ve her ürün için ayrı HTML adresi (`urun/google-yorum-karti/`). Eski ürün hash bağlantıları yeni sayfaya yönlenir.
 - QR+NFC, yalnız NFC, yalnız QR; sabit/değiştirilebilir bağlantı seçimi ve adet.
-- 10×10cm boyut alanı, şeffaf/beyaz pleksi seçimi; varyantları ayrı tutan ve sekme oturumunda korunan önizleme sepeti.
+- 5×5–15×15cm boyut seçimi, şeffaf/beyaz pleksi seçimi; varyantları ayrı tutan ve sekme oturumunda korunan önizleme sepeti.
 - Menünün dört türü; PDF/web tasarımında teklif iletişimi akışı.
 - Kapalı satın alma düğmeleri ve “Fiyat henüz girilmedi” gösterimi. Ödeme alanı yoktur.
 - Klavye, native dialog odak yönetimi, Escape, mobil menü, reduced-motion ve responsive yerleşim.
@@ -33,6 +33,7 @@ npm run build:pages
 ## İçerik ve yapı
 - `src/shop.js`: ürünler, seçenekler, sepet kuralları. Fiyatlar bilinçli olarak `null`.
 - `src/main.js`: etkileşimler ve temsili kartlar; gerçek yönlendirme veya ödeme servisi değildir.
+- `ornek/iban/index.html`, `src/account-demo.js`: kart okutulunca açılacak hesap sayfasının gerçek hesap içermeyen bağımsız örneği.
 - `src/product-pages.js`: hizmete özel sayfa içerikleri; derlemede yedi bağımsız sayfa üretilir.
 - `src/style.css`: tasarım sistemi ve ekran boyutlarına uyarlamalar.
 - [Kaynaklar ve tasarım kararları](docs/TASARIM-KARARLARI.md)

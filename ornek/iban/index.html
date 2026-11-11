@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="theme-color" content="#174e3c" />
+    <meta name="description" content="NFC ve QR ile açılan örnek işletme hesap bilgisi sayfası. Gerçek hesap veya ödeme içermez." />
+    <title>Örnek Kafe — Hesap Bilgileri Demosu</title>
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  </head>
+  <body>
+    <div class="demo-banner">DEMO · GERÇEK HESAP DEĞİLDİR</div>
+    <main class="account-shell">
+      <header class="business-heading">
+        <span class="business-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 9h11v7a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9Zm11 1h2a3 3 0 0 1 0 6h-2M8 3v3m4-4v4" /></svg></span>
+        <p class="eyebrow">ÖRNEK İŞLETME</p>
+        <h1>Örnek Kafe</h1>
+        <p>Hesap bilgilerimiz</p>
+      </header>
+      <section class="bank-card" aria-labelledby="bank-heading">
+        <div class="bank-heading"><span class="bank-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m3 9 9-6 9 6H3Zm2 3v7m5-7v7m4-7v7m5-7v7M2 22h20" /></svg></span><div><h2 id="bank-heading">Örnek Banka</h2><p>Türk lirası · TL hesabı</p></div><span class="currency">TRY</span></div>
+        <div class="account-owner"><span class="field-caption">HESAP SAHİBİ</span><p id="account-holder">Örnek Kafe İşletmesi</p><button type="button" class="quiet-copy" data-copy="holder">Hesap adını kopyala <span aria-hidden="true">↗</span></button></div>
+        <div class="iban-block"><label class="field-caption" for="demo-iban">IBAN</label><textarea id="demo-iban" rows="2" readonly aria-describedby="sample-note" spellcheck="false">TR00 0000 0000 0000 0000 0000 00</textarea><p id="sample-note">Geçersiz örnek numaradır. Para göndermek için kullanılamaz.</p></div>
+        <button type="button" class="copy-primary" data-copy="iban"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>Örnek IBAN’ı kopyala</button>
+        <p class="copy-status" id="copy-status" role="status" aria-live="polite">Kopyalamayı deneyebilirsiniz; gerçek hesap bilgisi içermez.</p>
+      </section>
+      <section class="transfer-guide" aria-labelledby="transfer-heading"><h2 id="transfer-heading">Gerçek kullanımda nasıl çalışır?</h2><ol><li><span>1</span><p>IBAN’ı kopyalayın.</p></li><li><span>2</span><p>Bankanızın uygulamasında para transferi ekranına yapıştırın.</p></li><li><span>3</span><p>Alıcı adını ve tutarı kontrol edip işlemi bankanızda onaylayın.</p></li></ol><p class="transfer-note">Bu sayfa hesap bilgisini paylaşır. Para transferi başlatmaz ve ödeme tamamlandığını göstermez.</p></section>
+      <footer class="demo-footer"><span>TASARIM ÖNİZLEMESİ</span><p>İşletme, banka ve hesap bilgileri kurgusaldır.</p><a href="../../urun/iban-paylasim-karti/">IBAN kartını inceleyin <span aria-hidden="true">↗</span></a></footer>
+    </main>
+    <noscript><p class="noscript">Kopyalama düğmeleri için JavaScript gerekir. Örnek metni seçerek kopyalayabilirsiniz.</p></noscript>
+    <script type="module" src="../../src/account-demo.js"></script>
+  </body>
+</html>
