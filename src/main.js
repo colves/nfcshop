@@ -1,6 +1,7 @@
 import '@fontsource-variable/manrope';
 import './readability.css';
 import './product-pages.css';
+import './service-themes.css';
 import { productPages, productPath, productIdFromPath } from './product-pages.js';
 import QRCode from 'qrcode';
 import { products, makeSelection, addToCart, changeQuantity, requiresQuote, connectionLabels, linkLabels, menuLabels, connectionNote, sizeLabels, materialLabels, contactUrl, restoreCart } from './shop.js';

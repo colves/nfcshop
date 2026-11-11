@@ -13,3 +13,19 @@
 ## Derleme
 
 `npm run build` Vite çıktısını, ardından yedi statik sayfayı üretir. `npm run build:pages` bunları docs klasörüne kopyalar. Geliştirme sunucusu aynı şablonu middleware ile sunar. Kaynak index.html ve src/product-pages.js; docs HTML'leri elle düzenlenmez.
+
+## Kart türüne özel görsel tasarımlar
+
+Kullanıcı yalnız içerik farkı değil, sayfa tasarımlarının da ürün türüne göre değişmesini istedi. Ortak marka/menü/seçim bileşenleri korunarak yedi ayrı sunum eklendi. Düzenler `src/service-visuals.js`, görsel kurallar `src/service-themes.css` içindedir.
+
+| Kart | Yerleşim ve görsel anlatım |
+|---|---|
+| Google yorum | Yorum daveti, QR/NFC girişleri ve değerlendirme sayfasına giden dikey akış |
+| Instagram | Ortalanmış açılış ve geniş editoryal profil vitrini; gerçek takipçi/istatistik yok |
+| WhatsApp | İşletme sohbet başlığı ve iki yönlü temsili konuşma |
+| Menü | Koyu restoran sunumu, mobil menü düzeni ve dört hizmet yolu |
+| IBAN | Hesap dökümü, üç adımlı bilgi/transfer ayrımı ve bağımsız demo bağlantısı |
+| Web | Üstte geniş başlık/aksiyon, altta tam genişlikte tarayıcı ve site vitrini |
+| İlan | Tek ilan detay kartı ile mağaza/profil yolu bulunan ilan panosu |
+
+Örnekler temsili ve açıkça etiketlidir. Gerçek yorum, profil istatistiği, müşteri hesabı, ilan veya sipariş üretilmez. Kullanıcı nihai fotoğrafları daha sonraya bıraktığından bu aşamada fotoğraf üretilmedi.
