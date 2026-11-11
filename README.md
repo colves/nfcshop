@@ -40,4 +40,4 @@ npm run build:pages
 ## Önemli sınırlar
 WhatsApp numarası henüz verilmediği için iletişim düğmesi bilgi penceresi açar. Sahte numara, fiyat, müşteri yorumu veya sipariş başarısı kullanılmaz. PDF yükleme/bağlantı toplama ve ödeme, gerçek sunucu ile ticari koşullar hazırlanınca eklenmelidir. Dinamik bağlantı hizmeti için kendi kalıcı alan adı kullanılmalıdır.
 
-Google Fonts üzerinden Manrope yüklenir; erişilemezse yerel Arial/sans-serif kullanılır. Analitik, reklam pikseli ve takip çerezi eklenmedi. Google Fonts bağlantısının IP gibi bağlantı bilgilerini üçüncü tarafa iletmesi canlı yayına geçişte gizlilik değerlendirmesine dahil edilmelidir.
+Manrope açık lisanslı yazı tipi yerel derlemeye dahildir; font CDN isteği yapılmaz. Yedek Arial/sans-serif vardır. Analitik, reklam pikseli ve takip çerezi eklenmedi.

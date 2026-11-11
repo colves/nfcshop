@@ -1,0 +1,37 @@
+:root { --font: 'Manrope Variable', Arial, sans-serif; }
+
+/* Keep commerce-critical text readable on compact screens. */
+@media (max-width: 600px) {
+  .preview-bar { font-size: 10px; flex-wrap: wrap; line-height: 1.5; }
+  .hero .eyebrow, .eyebrow { font-size: 9px; }
+  .hero-copy > p { font-size: 14px; }
+  .hero-actions .button, .hero-actions .text-link { font-size: 12px; }
+  .hero-notes { font-size: 11px; }
+  .spec-inner > span { font-size: 11px; gap: 5px; }
+  .filter { font-size: 11px; min-height: 44px; padding-inline: 11px; }
+  .product-category { font-size: 8px; }
+  .product-name { font-size: 16px; }
+  .product-info > p { font-size: 12px; min-height: 85px; }
+  .product-meta { font-size: 10px; }
+  .product-price { font-size: 12px; min-height: 49px; }
+  .product-buttons .button, .buy-button { font-size: 12px; min-height: 44px; }
+  .catalog-footnote { font-size: 11px; }
+  .step h3 { font-size: 17px; }
+  .step p, .compatibility p { font-size: 13px; }
+  .connection-card > p, .connection-card li { font-size: 13px; }
+  .connection-note { font-size: 12px; }
+  .menu-copy > p { font-size: 14px; }
+  .menu-copy .small-note, .menu-options > span, .menu-copy .button { font-size: 12px; }
+  summary { font-size: 14px; }
+  details > p { font-size: 13px; }
+  .contact-band p, .contact-band .button { font-size: 13px; }
+  .detail-description, .field-note, .radio-card small { font-size: 12px; }
+  .radio-card, .radio-card strong, select { font-size: 13px; }
+  .detail-actions .button { font-size: 12px; }
+  .detail-specs { font-size: 11px; }
+  .preview-note, .custom-design { font-size: 12px; }
+  .cart-item h3 { font-size: 15px; }
+  .cart-item p, .cart-item-price, .cart-item-actions label, .remove-item { font-size: 12px; }
+  .cart-summary > div, .cart-summary > div > strong, .cart-summary > p, .cart-summary > .button { font-size: 12px; }
+  .cart-preview-note { font-size: 12px; }
+}

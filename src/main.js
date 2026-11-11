@@ -1,5 +1,7 @@
+import '@fontsource-variable/manrope';
+import './readability.css';
 import QRCode from 'qrcode';
-import { products, makeSelection, addToCart, changeQuantity, requiresQuote, connectionLabels, linkLabels, menuLabels, isSafeUrl } from './shop.js';
+import { products, makeSelection, addToCart, changeQuantity, requiresQuote, connectionLabels, linkLabels, menuLabels } from './shop.js';
 
 const paths = {
   arrow: '<path d="M5 12h14m-5-5 5 5-5 5"/>',
