@@ -1,5 +1,7 @@
 import '@fontsource-variable/manrope';
 import './account-demo.css';
+import './interaction-feedback.css';
+import { animateFeedback, revealFeedback } from './interaction-feedback.js';
 
 const status = document.querySelector('#copy-status');
 const iban = document.querySelector('#demo-iban');
@@ -12,6 +14,8 @@ document.querySelectorAll('[data-copy]').forEach(button => button.addEventListen
     await navigator.clipboard.writeText(text);
     status.textContent = isIban ? 'Örnek IBAN kopyalandı. Gerçek transfer için kullanılamaz.' : 'Örnek hesap adı kopyalandı.';
     status.dataset.state = 'success';
+    revealFeedback(status);
+    animateFeedback(button, [{ boxShadow: '0 0 0 3px #79a88c70' }, { boxShadow: '0 0 0 0px #79a88c00' }], 160);
   } catch {
     status.textContent = isIban ? 'Otomatik kopyalama kullanılamıyor. Örnek numarayı seçip kopyalayabilirsiniz.' : 'Otomatik kopyalama kullanılamıyor. Hesap adını seçip kopyalayabilirsiniz.';
     status.dataset.state = 'fallback';

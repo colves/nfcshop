@@ -4,6 +4,8 @@ import './product-pages.css';
 import './service-themes.css';
 import './product-calm.css';
 import './google-card-assets.css';
+import './interaction-feedback.css';
+import { animateFeedback, revealFeedback } from './interaction-feedback.js';
 import { googleCardImage, googleCardGallery } from './google-card-assets.js';
 import { productPages, productPath, productIdFromPath } from './product-pages.js';
 import QRCode from 'qrcode';
@@ -67,6 +69,7 @@ function showDialog(id) {
   const dialog = document.getElementById(id);
   dialog.showModal();
   document.body.classList.add('dialog-open');
+  animateFeedback(dialog, [{ opacity: 0, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }], 160);
 }
 function renderCatalog() {
   const shown = products.filter(p => activeFilter === 'all' || p.category === activeFilter);
@@ -84,9 +87,18 @@ function openProduct(id, updateHash = true) {
   summary.className = 'selection-summary';
   summary.setAttribute('role', 'status');
   form.querySelector('.detail-actions').before(summary);
+  let visualKey = 'hybrid:clear';
   const sync = () => {
     const values = new FormData(form);
-    document.querySelector('#detail-card-art').innerHTML = cardMockup(p, { connection: values.get('connection'), material: values.get('material') });
+    const nextVisualKey = `${values.get('connection')}:${values.get('material')}`;
+    if (nextVisualKey !== visualKey) {
+      visualKey = nextVisualKey;
+      const art = document.querySelector('#detail-card-art');
+      art.innerHTML = cardMockup(p, { connection: values.get('connection'), material: values.get('material') });
+      const photo = art.querySelector('img');
+      if (photo && !photo.complete) photo.addEventListener('load', () => { if (photo.isConnected) revealFeedback(photo); }, { once: true });
+      else revealFeedback(photo || art.firstElementChild);
+    }
     if (p.id === 'google') document.querySelectorAll('[data-google-material]').forEach(button => {
       button.setAttribute('aria-pressed', String(button.dataset.googleMaterial === values.get('material') && button.dataset.googleConnection === values.get('connection')));
     });
@@ -166,8 +178,10 @@ function openContact(selection = '') {
   if (!document.querySelector('#contact-dialog').open) showDialog('contact-dialog');
 }
 if (!pageProduct) {
-document.querySelector('#hero-card-front').innerHTML = cardMockup(products[0]);
-document.querySelector('#hero-card-back').innerHTML = cardMockup(products[1]);
+const homePhoto = document.querySelector('.hero-scene');
+homePhoto.classList.add('hero-product-photo');
+homePhoto.setAttribute('aria-label', 'Google yorum kartı ürün önizlemesi');
+homePhoto.innerHTML = `<figure>${googleCardImage()}<figcaption>Google yorum kartı <span>QR + NFC · Şeffaf pleksi</span></figcaption></figure>`;
 renderCatalog();
 document.querySelector('#baglanti').insertAdjacentHTML('beforeend', `<div class="connection-demo"><div class="demo-intro"><span class="eyebrow">KÜÇÜK BİR ÖRNEK</span><h3>Kart aynı. Hedef farklı.</h3><p>Bir hedef seçerek değiştirilebilir bağlantının mantığını görün.</p></div><div class="demo-route"><div class="demo-source">${icon('qr')}<span>Kartınızdaki<br><strong>sabit adres</strong></span></div><span class="demo-arrow">${icon('arrow')}</span><div id="demo-destination" class="demo-destination" role="status">${icon('globe')}<span>Google<br><strong>Yorum sayfanız</strong></span></div></div><div class="demo-buttons" role="group" aria-label="Örnek bağlantı hedefi"><button class="active" data-demo-target="google" aria-pressed="true">Google yorum</button><button data-demo-target="instagram" aria-pressed="false">Instagram</button><button data-demo-target="menu" aria-pressed="false">Dijital menü</button></div><p class="demo-footnote">Etkileşimli anlatım örneğidir. Gerçek kart bağlantısı değiştirilmez.</p></div>`);
 document.querySelectorAll('[data-demo-target]').forEach(button => button.addEventListener('click', () => {
@@ -220,6 +234,11 @@ document.querySelectorAll('dialog').forEach(dialog => {
     if (dialog.id === 'product-dialog' && location.hash.startsWith('#urun/')) history.replaceState(null, '', '#urunler');
   });
 });
+document.querySelectorAll('details').forEach(details => details.addEventListener('toggle', () => {
+  if (!details.open) return;
+  const content = details.querySelector(':scope > .connection-options-body, :scope > .compact-menu-options, :scope > p');
+  revealFeedback(content);
+}));
 function routeProduct() {
   if (!pageProduct && location.hash.startsWith('#urun/')) {
     const id = location.hash.slice(6);
