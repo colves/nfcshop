@@ -4,7 +4,7 @@ const methodNames = { hybrid: 'QR ve NFC', nfc: 'yalnız NFC', qr: 'yalnız QR' 
 
 export function googleCardAsset(connection = 'hybrid', material = 'clear', base = './') {
   if (!methods[connection] || !materials[material]) throw new Error('Geçersiz kart görseli seçimi');
-  return `${base}images/google/google-yorum-${materials[material]}-${methods[connection]}.webp`;
+  return `${base}images/google/google-yorum-${materials[material]}-${methods[connection]}-v2.webp`;
 }
 
 export function googleCardImage(connection = 'hybrid', material = 'clear', base = './') {
