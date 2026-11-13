@@ -1,0 +1,3 @@
+/* Keep the shared environment stationary while restoring the previous card artwork. */
+:is(.product-art,.detail-card-art,.hero-scene.hero-product-photo,.google-hero-photo){background-color:#f1eee9;background-image:url('/images/common/card-background.webp');background-size:cover;background-position:center;background-repeat:no-repeat}
+.google-hero-photo figcaption,.hero-product-photo figcaption{background:#f3f2ee;border-radius:6px;padding:6px 8px}

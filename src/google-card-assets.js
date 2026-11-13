@@ -13,6 +13,5 @@ export function googleCardImage(connection = 'hybrid', material = 'clear', base 
 }
 
 export function googleCardGallery(base = './') {
-  return `<div class="google-card-gallery" role="group" aria-label="Google yorum kartı görselleri">${Object.keys(materials).flatMap(material => Object.keys(methods).map(connection => `<button type="button" data-google-material="${material}" data-google-connection="${connection}" aria-pressed="${material === 'clear' && connection === 'hybrid'}">${cardModel('google',connection,material,base,false)}<span>${material === 'white' ? 'Beyaz' : 'Şeffaf'} · ${methodNames[connection]}</span></button>`)).join('')}</div>`;
+  return `<div class="google-card-gallery" role="group" aria-label="Google yorum kartı görselleri">${Object.keys(materials).flatMap(material => Object.keys(methods).map(connection => `<button type="button" data-google-material="${material}" data-google-connection="${connection}" aria-pressed="${material === 'clear' && connection === 'hybrid'}">${googleCardImage(connection, material, base)}<span>${material === 'white' ? 'Beyaz' : 'Şeffaf'} · ${methodNames[connection]}</span></button>`)).join('')}</div>`;
 }
-import { cardModel } from './card-model.js';

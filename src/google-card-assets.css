@@ -7,8 +7,8 @@
 .google-card-gallery button{padding:0 0 7px;border:2px solid transparent;border-radius:9px;overflow:hidden;background:#f1f3f6;cursor:pointer;min-width:0;color:#26322d}
 .google-card-gallery button[aria-pressed=true]{border-color:#286746}
 .google-card-gallery button:focus-visible{outline:3px solid #286746;outline-offset:3px}
-.google-card-gallery .google-product-image{height:auto;aspect-ratio:1;border-radius:0}
-.google-card-gallery button>span{display:block;font-size:10px;line-height:1.4;padding:5px 3px 0}
+.google-card-gallery img{height:auto;aspect-ratio:1;border-radius:0}
+.google-card-gallery span{display:block;font-size:10px;line-height:1.4;padding:5px 3px 0}
 .google-hero-photo{margin:0;overflow:hidden;border-radius:22px;background:#eceef2}
 .google-hero-photo img{height:auto;aspect-ratio:1;object-fit:contain}
 .google-hero-photo figcaption{padding:0 16px 16px;color:#58625d;font-size:11px;line-height:1.6;text-align:center}
@@ -18,4 +18,4 @@
 .hero-product-photo figcaption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:0 4px 2px;font-size:12px;font-weight:650;color:#263b30}
 .hero-product-photo figcaption span{font-weight:400;color:#617067}
 @media(max-width:600px){.hero-scene.hero-product-photo{padding:12px;border-radius:18px}.hero-product-photo figure{gap:10px}.hero-product-photo figcaption{font-size:10px}.product-art:has(>.google-product-image){padding:12px}.product-art>.google-product-image{border-radius:7px}}
-@media(max-width:700px){.google-card-gallery{gap:5px}.google-card-gallery button>span{font-size:9px}.google-hero-photo{max-width:500px;width:100%;justify-self:center}}
+@media(max-width:700px){.google-card-gallery{gap:5px}.google-card-gallery span{font-size:9px}.google-hero-photo{max-width:500px;width:100%;justify-self:center}}

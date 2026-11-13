@@ -1,22 +1,49 @@
-import { paths } from './icons.js';
 import '@fontsource-variable/manrope';
 import './readability.css';
 import './product-pages.css';
 import './service-themes.css';
 import './product-calm.css';
 import './google-card-assets.css';
-import './card-model.css';
-import { cardModel, googleCardModel, installCardTilt } from './card-model.js';
+import './shared-card-background.css';
 import './interaction-feedback.css';
 import { animateFeedback, revealFeedback } from './interaction-feedback.js';
-import { googleCardGallery } from './google-card-assets.js';
+import { googleCardImage, googleCardGallery } from './google-card-assets.js';
 import { productPages, productPath, productIdFromPath } from './product-pages.js';
+import QRCode from 'qrcode';
 import { products, makeSelection, addToCart, changeQuantity, requiresQuote, connectionLabels, linkLabels, menuLabels, connectionNote, sizeLabels, materialLabels, contactUrl, restoreCart } from './shop.js';
 
-
+const paths = {
+  arrow: '<path d="M5 12h14m-5-5 5 5-5 5"/>',
+  'arrow-down': '<path d="M12 5v14m-5-5 5 5 5-5"/>',
+  check: '<path d="m5 12 4 4L19 6"/>',
+  bag: '<path d="M5 7h14l1 14H4L5 7Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+  close: '<path d="m6 6 12 12M6 18 18 6"/>',
+  square: '<rect x="4" y="4" width="16" height="16" rx="3"/>',
+  layers: '<path d="m12 3 10 5-10 5L2 8l10-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/>',
+  corner: '<path d="M5 20V10a5 5 0 0 1 5-5h10"/>',
+  attach: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="m5 19 14-14M4 13l9 7M11 4l9 7"/>',
+  link: '<path d="m10 13 4-4m-6 6-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 2 1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0" transform="translate(1 1)"/>',
+  tap: '<path d="M9 19v-8a2 2 0 0 1 4 0v4-2a2 2 0 0 1 3-1l3 2v3l-2 5H9l-5-6a2 2 0 0 1 3-2l2 2M5 9a7 7 0 0 1 12-4M2 7A10 10 0 0 1 20 3"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/>',
+  refresh: '<path d="M20 8a8 8 0 0 0-14-3L3 8m0-5v5h5M4 16a8 8 0 0 0 14 3l3-3m0 5v-5h-5"/>',
+  message: '<path d="M21 11a9 9 0 0 1-9 9 10 10 0 0 1-4-1l-5 2 1-5a9 9 0 1 1 17-5Z"/><path d="M8 8c1 4 3 6 7 7l1-2-3-1-1 1-2-2 1-1-1-3-2 1Z"/>',
+  instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01" stroke-width="3"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>',
+  bank: '<path d="m3 9 9-6 9 6H3Zm2 3v7m5-7v7m4-7v7m5-7v7M2 22h20"/>',
+  home: '<path d="m3 10 9-7 9 7v11H3V10Z"/><path d="M9 21v-8h6v8"/>',
+  file: '<path d="M5 3h9l5 5v13H5V3Z"/><path d="M14 3v6h5M8 13h8m-8 4h6"/>',
+  pen: '<path d="m4 16-1 5 5-1L21 7l-4-4L4 16Zm10-10 4 4"/>',
+  qr: '<path d="M3 3h6v6H3V3Zm12 0h6v6h-6V3ZM3 15h6v6H3v-6Zm12 0h2v2h-2Zm4 0h2v6h-4v-2h-2v2h-3v-6m0-12v9H3m18 0h-6"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  minus: '<path d="M5 12h14"/>',
+  trash: '<path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/>',
+  shield: '<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"/><path d="m8 12 3 3 5-6"/>',
+};
 const icon = (name, cls = '') => `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.square}</svg>`;
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const hydrate = (root = document) => root.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = icon(el.dataset.icon); });
+const qrSvg = await QRCode.toString('https://example.org', { type: 'svg', margin: 1, width: 100, color: { dark: '#18221d', light: '#ffffff' } });
 const pageProduct = productIdFromPath(location.pathname);
 const homeBase = pageProduct ? '../../' : './';
 let cart = [];
@@ -25,10 +52,13 @@ function saveCart() { try { sessionStorage.setItem('nfc-preview-cart', JSON.stri
 let toastTimer;
 let activeFilter = 'all';
 
-function cardMockup(p, { connection = 'hybrid', material = 'clear' } = {}) {
-  return cardModel(p.id, connection, material, homeBase);
+function productMark(p) {
+  return p.symbol === 'G' ? '<span class="google-mark">G</span>' : icon(p.symbol);
 }
-
+function cardMockup(p, { connection = 'hybrid', material = 'clear', className = '' } = {}) {
+  if (p.id === 'google') return googleCardImage(connection, material, homeBase);
+  return `<div class="physical-card ${esc(p.tone)} material-${material} ${className}"><div class="card-platform">${productMark(p)}<span>${esc(p.label)}</span></div><div class="card-message"><strong>${esc(p.headline)}</strong><span>${esc(p.subtitle)}</span></div><div class="card-connect"><div class="card-qr ${connection === 'nfc' ? 'no-qr' : ''}">${connection === 'nfc' ? icon('tap') : qrSvg}</div><div class="card-connect-copy">${connection !== 'qr' ? '<span class="nfc-wave">)))</span><strong>Telefonunu yaklaştır</strong>' : '<strong>Kameranla okut</strong>'}<span>${connection === 'hybrid' ? 'veya QR kodu okut' : connection === 'nfc' ? 'NFC ile bağlantı kur' : 'bağlantıyı keşfet'}</span></div></div><div class="card-brand">nfcshop<span>•</span></div></div>`;
+}
 function notify(message) {
   const toast = document.querySelector('#toast');
   toast.textContent = message;
@@ -66,7 +96,7 @@ function openProduct(id, updateHash = true) {
       visualKey = nextVisualKey;
       const art = document.querySelector('#detail-card-art');
       art.innerHTML = cardMockup(p, { connection: values.get('connection'), material: values.get('material') });
-      const photo = art.querySelector('.card-model-face') || art.querySelector('img');
+      const photo = art.querySelector('img');
       if (photo && !photo.complete) photo.addEventListener('load', () => { if (photo.isConnected) revealFeedback(photo); }, { once: true });
       else revealFeedback(photo || art.firstElementChild);
     }
@@ -152,7 +182,7 @@ if (!pageProduct) {
 const homePhoto = document.querySelector('.hero-scene');
 homePhoto.classList.add('hero-product-photo');
 homePhoto.setAttribute('aria-label', 'Google yorum kartı ürün önizlemesi');
-homePhoto.innerHTML = `<figure>${googleCardModel()}<figcaption>Google yorum kartı <span>QR + NFC · Şeffaf pleksi</span></figcaption></figure>`;
+homePhoto.innerHTML = `<figure>${googleCardImage()}<figcaption>Google yorum kartı <span>QR + NFC · Şeffaf pleksi</span></figcaption></figure>`;
 renderCatalog();
 document.querySelector('#baglanti').insertAdjacentHTML('beforeend', `<div class="connection-demo"><div class="demo-intro"><span class="eyebrow">KÜÇÜK BİR ÖRNEK</span><h3>Kart aynı. Hedef farklı.</h3><p>Bir hedef seçerek değiştirilebilir bağlantının mantığını görün.</p></div><div class="demo-route"><div class="demo-source">${icon('qr')}<span>Kartınızdaki<br><strong>sabit adres</strong></span></div><span class="demo-arrow">${icon('arrow')}</span><div id="demo-destination" class="demo-destination" role="status">${icon('globe')}<span>Google<br><strong>Yorum sayfanız</strong></span></div></div><div class="demo-buttons" role="group" aria-label="Örnek bağlantı hedefi"><button class="active" data-demo-target="google" aria-pressed="true">Google yorum</button><button data-demo-target="instagram" aria-pressed="false">Instagram</button><button data-demo-target="menu" aria-pressed="false">Dijital menü</button></div><p class="demo-footnote">Etkileşimli anlatım örneğidir. Gerçek kart bağlantısı değiştirilmez.</p></div>`);
 document.querySelectorAll('[data-demo-target]').forEach(button => button.addEventListener('click', () => {
@@ -218,4 +248,3 @@ function routeProduct() {
 }
 window.addEventListener('hashchange', routeProduct);
 routeProduct();
-installCardTilt();
