@@ -28,3 +28,5 @@ Kullanıcı, ayrı düz modelde ışık/gölge/parlaklığın kaybolduğunu beli
 Son karar: Kullanıcı ortak sabit arka planları da kaldırmamızı istedi. Ortak arka plan stili kaldırıldı. Google fotoğrafı normal ve kırpılmadan gösterilir; diğer kartlar önceki sade renk zeminlerindedir. Bu karar önceki ortak arka plan kararının yerini alır.
 
 Son boyut kararı: Katalog görsel alanları 1:1 kare yapıldı. Google fotoğrafı ek iç boşluk olmadan contain ile kareye yerleşir; fotoğraf oranı daima korunur. Masaüstü ve 390px telefonda alanların en ve boylarının eşitliği tarayıcıda doğrulandı.
+
+Malzeme güncellemesi: Beyaz pleksi seçeneği bütün ürünlerden kaldırıldı. Katalog ve Google küçük görsellerinde yalnız şeffaf yer alır; eski beyaz önizleme sepet satırları geri yüklenmez. Kaynak görseller arşivde korunur.

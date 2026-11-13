@@ -5,11 +5,12 @@ import { products, makeSelection, addToCart, restoreCart, contactUrl, sizeLabels
 import { productPages, productPath, productIdFromPath } from '../src/product-pages.js';
 import { productHtml } from '../scripts/product-html.mjs';
 
-test('material choices stay distinct across navigation and corrupted saved carts are rejected', () => {
+test('only clear material can be selected and retired white cart lines are removed', () => {
   let cart = addToCart([], makeSelection('google', { material:'clear', quantity:2 }));
-  cart = addToCart(cart, makeSelection('google', { material:'white', quantity:3 }));
-  assert.equal(cart.length,2);
+  for (const p of products) assert.throws(()=>makeSelection(p.id,{material:'white'}));
+  assert.equal(cart.length,1);
   assert.deepEqual(restoreCart(JSON.stringify(cart)),cart);
+  assert.deepEqual(restoreCart(JSON.stringify([...cart,{...cart[0],material:'white'}])),cart);
   for (const bad of ['invalid', 'null', '{}', '[{"productId":"missing"}]', '[{"productId":"google","material":"wood"}]']) assert.deepEqual(restoreCart(bad),[]);
   assert.throws(()=>makeSelection('google',{size:'20x20'}));
   assert.throws(()=>makeSelection('google',{material:'wood'}));
@@ -46,7 +47,7 @@ test('each static product page is directly addressable, unique and has working n
 });
 
 test('WhatsApp handoff encodes the chosen service without transmitting a message', () => {
-  const text = 'Menü · Beyaz pleksi · QR + NFC · 12 adet & tasarım';
+  const text = 'Menü · Şeffaf pleksi · QR + NFC · 12 adet & tasarım';
   const url = new URL(contactUrl(text));
   assert.equal(url.hostname,'wa.me');
   assert.equal(url.pathname,'/905511956312');

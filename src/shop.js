@@ -16,7 +16,7 @@ export function connectionNote(connection, linkType) {
 }
 export const menuLabels = { link: 'Hazır menü bağlantım var', pdf: 'Hazır PDF menüm var', 'design-pdf': 'PDF menü hazırlatmak istiyorum', 'design-web': 'Web menüsü hazırlatmak istiyorum' };
 export const sizeLabels = Object.fromEntries(Array.from({ length: 11 }, (_, i) => { const n = i + 5; return [`${n}x${n}`, `${n} × ${n} cm`]; }));
-export const materialLabels = { clear: 'Şeffaf pleksi', white: 'Beyaz pleksi' };
+export const materialLabels = { clear: 'Şeffaf pleksi' };
 export const whatsappNumber = '905511956312';
 export function contactUrl(message = '') {
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message || 'Merhaba, NFC ve QR kartlarınız hakkında bilgi almak istiyorum.')}`;
@@ -33,7 +33,7 @@ export function restoreCart(value) {
   try {
     const records = JSON.parse(value);
     if (!Array.isArray(records) || records.length > 100) return [];
-    return records.reduce((cart, record) => addToCart(cart, makeSelection(record.productId, record)), []);
+    return records.reduce((cart, record) => record?.material === 'white' ? cart : addToCart(cart, makeSelection(record.productId, record)), []);
   } catch { return []; }
 }
 export function addToCart(cart, selection) {
