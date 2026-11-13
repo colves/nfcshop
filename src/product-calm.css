@@ -11,3 +11,5 @@
 .material-options>.radio-card:only-child{grid-column:1/-1}
 
 .connection-options-heading h3{font-size:12px;font-weight:700;margin:0;letter-spacing:normal;line-height:1.5}
+
+.link-type-options:disabled .radio-card{cursor:not-allowed;background:#f3f4f1;border-color:var(--line);color:#67716b}.link-type-options:disabled .radio-card input{opacity:.55}

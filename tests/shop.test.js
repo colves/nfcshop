@@ -9,6 +9,15 @@ test('connection guidance distinguishes rewritable NFC from printed QR', () => {
   assert.match(connectionNote('hybrid', 'dynamic'), /talebiniz/);
 });
 
+test('NFC-only selections always use static links while QR selections retain their choice', () => {
+  for (const product of products) {
+    const nfc = makeSelection(product.id,{connection:'nfc',linkType:'dynamic'});
+    assert.equal(nfc.linkType,'static');
+    assert.equal(nfc.key,makeSelection(product.id,{connection:'nfc',linkType:'static'}).key);
+    for (const connection of ['hybrid','qr']) assert.equal(makeSelection(product.id,{connection,linkType:'dynamic'}).linkType,'dynamic');
+  }
+});
+
 test('preview catalog never exposes a buyable or invented price', () => {
   assert.equal(products.length, 7);
   assert.ok(products.every(p => p.price === null));

@@ -10,8 +10,8 @@ export const products = [
 export const connectionLabels = { hybrid: 'QR + NFC', nfc: 'Yalnız NFC', qr: 'Yalnız QR' };
 export const linkLabels = { static: 'Sabit bağlantı', dynamic: 'Değiştirilebilir bağlantı' };
 export function connectionNote(connection, linkType) {
+  if (connection === 'nfc') return 'Yalnız NFC seçeneğinde sabit bağlantı kullanılır; bağlantı türü seçimi kapalıdır. Kilitlenmemiş NFC, karta fiziksel erişimle yeniden yazılabilir.';
   if (linkType === 'dynamic') return 'Kart değişmeden hedefi talebinizle güncelleriz. Hizmet süresi ve koşulları satış öncesinde açıklanacak.';
-  if (connection === 'nfc') return 'NFC kilitlenmemişse karta fiziksel erişimle yeniden yazılabilir. Uzaktan değişiklik için değiştirilebilir bağlantıyı seçin.';
   return 'Basılı QR kodunun hedefi sonradan değiştirilemez. Değişiklik ihtiyacınız varsa değiştirilebilir bağlantıyı seçin.';
 }
 export const menuLabels = { link: 'Hazır menü bağlantım var', pdf: 'Hazır PDF menüm var', 'design-pdf': 'PDF menü hazırlatmak istiyorum', 'design-web': 'Web menüsü hazırlatmak istiyorum' };
@@ -26,8 +26,9 @@ export function makeSelection(productId, options = {}) {
   const { connection = 'hybrid', linkType = 'static', quantity = 1, menuType = 'link', size = '10x10', material = 'clear' } = options;
   if (!products.some(p => p.id === productId) || !connectionLabels[connection] || !linkLabels[linkType] || !validQuantity(quantity) || (productId === 'menu' && !menuLabels[menuType])) throw new Error('Ürün seçeneklerini ve 1–1000 arasındaki adedi kontrol edin.');
   const actualMenuType = productId === 'menu' ? menuType : null;
+  const actualLinkType = connection === 'nfc' ? 'static' : linkType;
   if (!sizeLabels[size] || !materialLabels[material]) throw new Error('Boyut ve pleksi seçimini kontrol edin.');
-  return { productId, connection, linkType, quantity, size, material, menuType: actualMenuType, key: [productId, size, material, connection, linkType, actualMenuType || ''].join(':') };
+  return { productId, connection, linkType: actualLinkType, quantity, size, material, menuType: actualMenuType, key: [productId, size, material, connection, actualLinkType, actualMenuType || ''].join(':') };
 }
 export function restoreCart(value) {
   try {
