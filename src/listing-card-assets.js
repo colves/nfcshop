@@ -4,7 +4,7 @@ const names = { hybrid: 'QR ve NFC', nfc: 'yalnız NFC', qr: 'yalnız QR' };
 
 export function listingCardAsset(connection = 'hybrid', material = 'clear', base = './') {
   if (!methods[connection] || material !== 'clear') throw new Error('Geçersiz kart görseli seçimi');
-  return `${base}images/sahibinden/sahibinden-seffaf-${methods[connection]}-v8.webp`;
+  return `${base}images/sahibinden/sahibinden-seffaf-${methods[connection]}-v9.webp`;
 }
 
 export function listingCardImage(connection = 'hybrid', material = 'clear', base = './', options = {}) {
