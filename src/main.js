@@ -7,6 +7,7 @@ import './google-card-assets.css';
 import './interaction-feedback.css';
 import { animateFeedback, revealFeedback } from './interaction-feedback.js';
 import { googleCardImage, googleCardGallery } from './google-card-assets.js';
+import { instagramCardImage, instagramCardGallery } from './instagram-card-assets.js';
 import { productPages, productPath, productIdFromPath } from './product-pages.js';
 import QRCode from 'qrcode';
 import { products, makeSelection, addToCart, changeQuantity, requiresQuote, connectionLabels, linkLabels, menuLabels, connectionNote, sizeLabels, materialLabels, contactUrl, restoreCart } from './shop.js';
@@ -56,6 +57,7 @@ function productMark(p) {
 }
 function cardMockup(p, { connection = 'hybrid', material = 'clear', className = '' } = {}) {
   if (p.id === 'google') return googleCardImage(connection, material, homeBase);
+  if (p.id === 'instagram') return instagramCardImage(connection, material, homeBase);
   return `<div class="physical-card ${esc(p.tone)} material-${material} ${className}"><div class="card-platform">${productMark(p)}<span>${esc(p.label)}</span></div><div class="card-message"><strong>${esc(p.headline)}</strong><span>${esc(p.subtitle)}</span></div><div class="card-connect"><div class="card-qr ${connection === 'nfc' ? 'no-qr' : ''}">${connection === 'nfc' ? icon('tap') : qrSvg}</div><div class="card-connect-copy">${connection !== 'qr' ? '<span class="nfc-wave">)))</span><strong>Telefonunu yaklaştır</strong>' : '<strong>Kameranla okut</strong>'}<span>${connection === 'hybrid' ? 'veya QR kodu okut' : connection === 'nfc' ? 'NFC ile bağlantı kur' : 'bağlantıyı keşfet'}</span></div></div><div class="card-brand">nfcshop<span>•</span></div></div>`;
 }
 function notify(message) {
@@ -83,6 +85,7 @@ function openProduct(id, updateHash = true) {
   document.querySelector('#product-detail').innerHTML = `<div class="dialog-top product-dialog-heading"><span class="eyebrow">KARTINIZI ŞEKİLLENDİRİN</span><a class="text-link" href="../../#urunler">Tüm kartlar ${icon('arrow')}</a></div><div class="product-detail-grid"><div class="detail-media"><div class="detail-card-art art-${p.tone}" id="detail-card-art">${cardMockup(p)}</div><div class="detail-caption">Temsili tasarım · QR örnek bağlantıya gider</div><div class="detail-specs"><span>${icon('square')}<span data-selected-size>10 × 10 cm</span></span><span>${icon('layers')}3 mm pleksi</span><span>${icon('attach')}Çift taraflı bant</span><span>${icon('corner')}Yuvarlatılmış köşe</span></div></div><div class="detail-content"><h2 id="product-title">${p.name}</h2><p class="detail-price">Fiyat henüz girilmedi</p><form id="selection-form"><div class="physical-options"><label class="field-label" for="size">Boyut<select id="size" name="size">${Object.entries(sizeLabels).map(([v, label]) => `<option value="${v}" ${v === '10x10' ? 'selected' : ''}>${label}</option>`).join('')}</select></label><fieldset><legend>Malzeme</legend><div class="radio-cards material-options">${Object.entries(materialLabels).map(([v, label]) => `<label class="radio-card"><input type="radio" name="material" value="${v}" ${v === 'clear' ? 'checked' : ''}><span class="material-swatch swatch-${v}" aria-hidden="true"></span><span>${label}</span></label>`).join('')}</div></fieldset></div><section class="connection-options" aria-labelledby="connection-options-title"><div class="connection-options-heading"><h3 id="connection-options-title">Bağlantı seçenekleri</h3><small id="connection-summary">QR + NFC · Sabit bağlantı</small></div><div class="connection-options-body"><fieldset><legend>Okutma yöntemi</legend><div class="radio-cards">${Object.entries(connectionLabels).map(([value, label]) => `<label class="radio-card"><input type="radio" name="connection" value="${value}" ${value === 'hybrid' ? 'checked' : ''}><span>${label}</span></label>`).join('')}</div></fieldset><fieldset><legend>Bağlantı türü</legend><div class="radio-cards stacked"><label class="radio-card"><input type="radio" name="linkType" value="static" checked><span><strong>Sabit bağlantı</strong><small>Verdiğiniz adres doğrudan karta kaydedilir.</small></span></label><label class="radio-card"><input type="radio" name="linkType" value="dynamic"><span><strong>Değiştirilebilir bağlantı</strong><small>Kart aynı kalır, hedefi talebinizle güncelleriz.</small></span></label></div><p id="link-type-note" class="field-note">Basılı QR kodunun hedefi sonradan değiştirilemez.</p></fieldset></div></section>${p.id === 'menu' ? `<label class="field-label" for="menu-type">Menü hizmeti</label><select id="menu-type" name="menuType">${Object.entries(menuLabels).map(([v, label]) => `<option value="${v}">${label}</option>`).join('')}</select><p id="menu-type-note" class="field-note">Menünüzün çalışan bağlantısı kullanılır.</p>` : ''}<div class="quantity-line"><label class="field-label" for="quantity">Adet</label><div class="quantity-control"><button type="button" data-quantity-step="-1" aria-label="Adedi azalt">${icon('minus')}</button><input id="quantity" name="quantity" type="number" inputmode="numeric" value="1" min="1" max="1000" step="1" required><button type="button" data-quantity-step="1" aria-label="Adedi artır">${icon('plus')}</button></div></div><p id="selection-error" class="error-message" role="alert"></p><div class="detail-actions"><button type="submit" id="selection-submit" class="button primary">Seçimi sepette incele ${icon('bag')}</button><button type="button" class="button disabled-purchase" disabled>Satın al</button></div><p class="preview-note">Önizleme sepetidir; sipariş veya ödeme oluşturmaz.</p></form></div></div>`;
   const form = document.querySelector('#selection-form');
   if (p.id === 'google') document.querySelector('.detail-media').insertAdjacentHTML('beforeend', googleCardGallery(homeBase));
+  if (p.id === 'instagram') document.querySelector('.detail-media').insertAdjacentHTML('beforeend', instagramCardGallery(homeBase));
   const summary = document.createElement('div');
   summary.className = 'selection-summary';
   summary.setAttribute('role', 'status');
@@ -99,7 +102,7 @@ function openProduct(id, updateHash = true) {
       if (photo && !photo.complete) photo.addEventListener('load', () => { if (photo.isConnected) revealFeedback(photo); }, { once: true });
       else revealFeedback(photo || art.firstElementChild);
     }
-    if (p.id === 'google') document.querySelectorAll('[data-google-material]').forEach(button => {
+    if (['google', 'instagram'].includes(p.id)) document.querySelectorAll('[data-google-material]').forEach(button => {
       button.setAttribute('aria-pressed', String(button.dataset.googleMaterial === values.get('material') && button.dataset.googleConnection === values.get('connection')));
     });
     document.querySelector('#connection-summary').textContent = `${connectionLabels[values.get('connection')]} · ${linkLabels[values.get('linkType')]}`;
@@ -116,7 +119,7 @@ function openProduct(id, updateHash = true) {
     document.querySelector('#selection-submit').innerHTML = quote ? `WhatsApp ile teklif al ${icon('message')}` : `Seçimi sepette incele ${icon('bag')}`;
   };
   form.addEventListener('change', sync);
-  if (p.id === 'google') document.querySelectorAll('[data-google-material]').forEach(button => {
+  if (['google', 'instagram'].includes(p.id)) document.querySelectorAll('[data-google-material]').forEach(button => {
     button.addEventListener('click', () => {
       form.querySelector(`input[name="material"][value="${button.dataset.googleMaterial}"]`).checked = true;
       form.querySelector(`input[name="connection"][value="${button.dataset.googleConnection}"]`).checked = true;
