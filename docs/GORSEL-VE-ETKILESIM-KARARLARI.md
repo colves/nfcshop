@@ -24,3 +24,5 @@ Kullanıcının son talebi: bütün kartlarda aynı arka plan görseli, her kart
 
 ## Son kullanıcı düzeltmesi — önceki görünüm geri getirildi
 Kullanıcı, ayrı düz modelde ışık/gölge/parlaklığın kaybolduğunu belirtti ve model görünümünün önceki haline alınmasını; yalnız ortak sabit arka planın kalmasını istedi. 89c7c09 sürümündeki Google fotoğrafları ve diğer kartların önceki CSS görselleri geri getirildi. Yeni SVG yüz ve fare eğimi katmanı aktif uygulamadan çıkarıldı. Ortak arka plan `src/shared-card-background.css` ile sunum alanlarında korundu. Google fotoğrafı kendi çekim ortamını da içerir; fotoğrafın içindeki ortam ayrı bir katmanmış gibi sunulmaz. Kaynak ve eski görsel dosyaları arşiv olarak tutulur. 13 test ve Pages derlemesi başarılı.
+
+Son karar: Kullanıcı ortak sabit arka planları da kaldırmamızı istedi. Ortak arka plan stili kaldırıldı. Google fotoğrafı normal ve kırpılmadan gösterilir; diğer kartlar önceki sade renk zeminlerindedir. Bu karar önceki ortak arka plan kararının yerini alır.

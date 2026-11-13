@@ -4,7 +4,6 @@ import './product-pages.css';
 import './service-themes.css';
 import './product-calm.css';
 import './google-card-assets.css';
-import './shared-card-background.css';
 import './interaction-feedback.css';
 import { animateFeedback, revealFeedback } from './interaction-feedback.js';
 import { googleCardImage, googleCardGallery } from './google-card-assets.js';
