@@ -10,7 +10,7 @@ import './google-card-assets.css';
 import './media-layout.css';
 import './interaction-feedback.css';
 import { animateFeedback, revealFeedback } from './interaction-feedback.js';
-import { googleCardImage, googleCardGallery } from './google-card-assets.js';
+import { googleCardImage } from './google-card-assets.js';
 import { instagramCardGallery } from './instagram-card-assets.js';
 import { productPages, productPath, productIdFromPath } from './product-pages.js';
 import { products, makeSelection, addToCart, changeQuantity, requiresQuote, connectionLabels, linkLabels, menuLabels, connectionNote, sizeLabels, materialLabels, contactUrl, restoreCart } from './shop.js';
@@ -57,7 +57,6 @@ function openProduct(id, updateHash = true) {
     root.querySelector('.detail-media').before(root.querySelector('.detail-content'));
   }
   const form = document.querySelector('#selection-form');
-  if (p.id === 'google') document.querySelector('.detail-media').insertAdjacentHTML('beforeend', googleCardGallery(homeBase));
   if (p.id === 'instagram') document.querySelector('.detail-media').insertAdjacentHTML('beforeend', instagramCardGallery(homeBase));
   const summary = document.createElement('div');
   summary.className = 'selection-summary';
