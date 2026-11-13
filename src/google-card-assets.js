@@ -1,3 +1,4 @@
+import { responsiveImage } from './responsive-image.js';
 const methods = { hybrid: 'qr-nfc', nfc: 'nfc', qr: 'qr' };
 const materials = { clear: 'seffaf' };
 const methodNames = { hybrid: 'QR ve NFC', nfc: 'yalnız NFC', qr: 'yalnız QR' };
@@ -8,10 +9,10 @@ export function googleCardAsset(connection = 'hybrid', material = 'clear', base 
   return `${base}images/google/google-yorum-${materials[material]}-${methods[connection]}-${revision}.webp`;
 }
 
-export function googleCardImage(connection = 'hybrid', material = 'clear', base = './') {
-  return `<img class="google-product-image" src="${googleCardAsset(connection, material, base)}" alt="Google yorum kartı, şeffaf pleksi, ${methodNames[connection]}" width="1254" height="1254" decoding="async">`;
+export function googleCardImage(connection = 'hybrid', material = 'clear', base = './', options = {}) {
+  return responsiveImage(googleCardAsset(connection, material, base), `Google yorum kartı, şeffaf pleksi, ${methodNames[connection]}`, { ...options, className: 'google-product-image' });
 }
 
 export function googleCardGallery(base = './') {
-  return `<div class="google-card-gallery" role="group" aria-label="Google yorum kartı görselleri">${Object.keys(materials).flatMap(material => Object.keys(methods).map(connection => `<button type="button" data-google-material="${material}" data-google-connection="${connection}" aria-pressed="${material === 'clear' && connection === 'hybrid'}">${googleCardImage(connection, material, base)}<span>Şeffaf · ${methodNames[connection]}</span></button>`)).join('')}</div>`;
+  return `<div class="google-card-gallery" role="group" aria-label="Google yorum kartı görselleri">${Object.keys(materials).flatMap(material => Object.keys(methods).map(connection => `<button type="button" data-google-material="${material}" data-google-connection="${connection}" aria-pressed="${material === 'clear' && connection === 'hybrid'}">${googleCardImage(connection, material, base, { placement: 'thumbnail' })}<span>Şeffaf · ${methodNames[connection]}</span></button>`)).join('')}</div>`;
 }

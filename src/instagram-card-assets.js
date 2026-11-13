@@ -1,3 +1,4 @@
+import { responsiveImage } from './responsive-image.js';
 const methods = { hybrid: 'qr-nfc', nfc: 'nfc', qr: 'qr' };
 const names = { hybrid: 'QR ve NFC', nfc: 'yalnız NFC', qr: 'yalnız QR' };
 
@@ -6,10 +7,10 @@ export function instagramCardAsset(connection = 'hybrid', material = 'clear', ba
   return `${base}images/instagram/instagram-seffaf-${methods[connection]}-v7.webp`;
 }
 
-export function instagramCardImage(connection = 'hybrid', material = 'clear', base = './') {
-  return `<img class="google-product-image instagram-product-image" src="${instagramCardAsset(connection, material, base)}" alt="Instagram kartı, şeffaf pleksi, ${names[connection]}" width="1254" height="1254" decoding="async">`;
+export function instagramCardImage(connection = 'hybrid', material = 'clear', base = './', options = {}) {
+  return responsiveImage(instagramCardAsset(connection, material, base), `Instagram kartı, şeffaf pleksi, ${names[connection]}`, { ...options, className: 'google-product-image instagram-product-image' });
 }
 
 export function instagramCardGallery(base = './') {
-  return `<div class="google-card-gallery" role="group" aria-label="Instagram kartı görselleri">${Object.keys(methods).map(connection => `<button type="button" data-google-material="clear" data-google-connection="${connection}" aria-pressed="${connection === 'hybrid'}">${instagramCardImage(connection, 'clear', base)}<span>Şeffaf · ${names[connection]}</span></button>`).join('')}</div>`;
+  return `<div class="google-card-gallery" role="group" aria-label="Instagram kartı görselleri">${Object.keys(methods).map(connection => `<button type="button" data-google-material="clear" data-google-connection="${connection}" aria-pressed="${connection === 'hybrid'}">${instagramCardImage(connection, 'clear', base, { placement: 'thumbnail' })}<span>Şeffaf · ${names[connection]}</span></button>`).join('')}</div>`;
 }

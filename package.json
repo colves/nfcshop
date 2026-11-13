@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5174",
-    "build": "vite build --base=./ && node scripts/generate-product-pages.mjs",
+    "build": "node scripts/prepare-media.mjs && vite build --base=./ && node scripts/generate-product-pages.mjs",
     "build:pages": "npm run build && node scripts/prepare-pages.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 4174",
     "test": "node --test tests/*.test.js"

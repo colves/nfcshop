@@ -1,0 +1,11 @@
+/* Same square framing and relative card scale; approved photography stays intact. */
+.product-art>.physical-card{width:70%;max-width:76%}
+.card-qr>img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain}
+.photo-product-config .product-detail-grid{grid-template-areas:'media content'}
+.photo-product-config .detail-media{grid-area:media}
+.photo-product-config .detail-content{grid-area:content}
+@media(max-width:700px){
+  .photo-product-config .product-detail-grid{grid-template-areas:'content' 'media'}
+  .photo-product-config .detail-media{border-top:1px solid var(--line);padding-top:20px}
+  .photo-product-config .google-card-gallery{max-width:360px;margin-inline:auto}
+}
