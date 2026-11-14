@@ -5,7 +5,8 @@ import { instagramCardAsset } from '../src/instagram-card-assets.js';
 import { whatsappCardAsset } from '../src/whatsapp-card-assets.js';
 import { listingCardAsset } from '../src/listing-card-assets.js';
 import { websiteCardAsset } from '../src/website-card-assets.js';
-for (const asset of [googleCardAsset,instagramCardAsset,whatsappCardAsset,listingCardAsset,websiteCardAsset]) for (const method of ['hybrid','nfc','qr']) {
+import { ibanCardAsset } from '../src/iban-card-assets.js';
+for (const asset of [googleCardAsset,instagramCardAsset,whatsappCardAsset,listingCardAsset,websiteCardAsset,ibanCardAsset]) for (const method of ['hybrid','nfc','qr']) {
   const original = asset(method,'clear','');
   for (const width of [160,320,640,960]) await access(new URL(`../public/${original.replace('.webp',`-w${width}.webp`)}`,import.meta.url));
 }
