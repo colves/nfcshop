@@ -21,6 +21,11 @@ export const whatsappNumber = '905511956312';
 export function contactUrl(message = '') {
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message || 'Merhaba, NFC ve QR kartlarınız hakkında bilgi almak istiyorum.')}`;
 }
+export function describeSelection(selection) {
+  const item = makeSelection(selection.productId, selection);
+  const product = products.find(p => p.id === item.productId);
+  return [product.name, sizeLabels[item.size], `${materialLabels[item.material]} · 3 mm`, connectionLabels[item.connection], linkLabels[item.linkType], item.menuType ? menuLabels[item.menuType] : '', `${item.quantity} adet`].filter(Boolean).join(' · ');
+}
 export function validQuantity(n) { return Number.isInteger(n) && n >= 1 && n <= 1000; }
 export function makeSelection(productId, options = {}) {
   const { connection = 'hybrid', linkType = 'static', quantity = 1, menuType = 'link', size = '10x10', material = 'clear' } = options;
